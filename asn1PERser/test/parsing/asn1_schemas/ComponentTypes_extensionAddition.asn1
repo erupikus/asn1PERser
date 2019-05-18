@@ -1,0 +1,46 @@
+ComponentTypesExtension DEFINITIONS ::=
+BEGIN
+    MySeq ::= SEQUENCE {
+        int0    INTEGER,
+        otherSeq  OtherSequence,
+        ...,
+        add0    INTEGER,
+        add1    BOOLEAN
+    }
+
+    OtherSequence ::= SEQUENCE {
+        yetOtherSeq   YetOtherSeq,
+        myBool   BOOLEAN,
+        ...,
+        add2    BIT STRING
+    }
+
+    YetOtherSeq ::= SEQUENCE {
+        myEnum    MyEnum,
+        myChoice  MyChoice,
+        ...,
+        add3    OCTET STRING,
+        add4    INTEGER
+    }
+
+    MyEnum ::= ENUMERATED {
+        zero,
+        one,
+        two,
+        three,
+        ...,
+        four,
+        five
+    }
+
+    MyChoice ::= CHOICE {
+        c0    INTEGER,
+        c1    ThirdSequence,
+        c2    BOOLEAN,
+        ...,
+        c3    INTEGER,
+        c4    BOOLEAN
+    }
+
+    ThirdSequence ::= SEQUENCE OF OCTET STRING
+END

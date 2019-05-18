@@ -1,0 +1,20 @@
+SequenceSimpleTypes DEFINITIONS ::= BEGIN
+    MySeq ::= SEQUENCE {
+        one     INTEGER,
+        two     MyInteger,
+        three   OCTET STRING,
+        four    MyOctetString,
+        five    BIT STRING,
+        six     MyBitString,
+        seven   BOOLEAN,
+        eight   MyBoolean,
+        nine    ENUMERATED {one, two, three},
+        ten     MyEnumerated
+    }
+
+    MyInteger ::= INTEGER
+    MyOctetString ::= OCTET STRING
+    MyBitString ::= BIT STRING
+    MyBoolean ::= BOOLEAN
+    MyEnumerated ::= ENUMERATED {four, five, six}
+END

@@ -1,0 +1,11 @@
+class {{ class_name }}({{ class_type }}):
+{%- if constraint.lowerEndpoint and constraint.upperEndpoint and constraint.extensionMarker %}
+    subtypeSpec = SequenceOfValueSize({{ constraint.lowerEndpoint }}, {{ constraint.upperEndpoint }}, extensionMarker=True)
+{%- elif constraint.lowerEndpoint and constraint.upperEndpoint %}
+    subtypeSpec = SequenceOfValueSize({{ constraint.lowerEndpoint }}, {{ constraint.upperEndpoint }})
+{%- else %}
+{%- endif %}
+    componentType = {{ field_type }}()
+
+
+

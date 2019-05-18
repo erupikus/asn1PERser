@@ -1,0 +1,18 @@
+ChoiceSimple DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+    Order ::= CHOICE {
+        one     INTEGER,
+        two     MyInteger,
+        three   OCTET STRING,
+        four    MyOctetString,
+        five    BIT STRING,
+        six     MyBitString,
+        seven   BOOLEAN,
+        eight   MyBoolean
+    }
+
+    MyInteger ::= INTEGER
+    MyOctetString ::= OCTET STRING
+    MyBitString ::= BIT STRING
+    MyBoolean ::= BOOLEAN
+END

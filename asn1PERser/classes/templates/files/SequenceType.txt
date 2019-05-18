@@ -1,0 +1,62 @@
+class {{ class_name }}({{ class_type }}):
+{%- filter indent(width=4) %}
+{%- for template in subtemplates %}
+{{ template }}
+{%- endfor %}
+{%- endfilter %}
+{%- if extension_marker %}
+    subtypeSpec = ExtensionMarker(True)
+{%- endif %}
+    rootComponent = AdditiveNamedTypes(
+{%- for named_type in root_named_types %}
+  {%- if named_type.optional %}
+        OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+  {%- elif named_type.default %}
+        DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+  {%- else %}
+        NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+  {%- endif %}
+{%- endfor %}
+    )
+{%- if addition_named_types %}
+    extensionAddition = AdditiveNamedTypes(
+  {%- for named_type in addition_named_types %}
+    {%- if named_type.optional %}
+        OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+    {%- elif named_type.default %}
+        DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+    {%- else %}
+        NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+    {%- endif %}
+  {%- endfor %}
+    )
+{%- endif %}
+{%- if extension_addition_groups %}
+    extensionAdditionGroups = [
+  {%- for extenion_addition_group in extension_addition_groups %}
+        AdditiveNamedTypes(
+    {%- for named_type in extenion_addition_group %}
+      {%- if named_type.optional %}
+            OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+      {%- elif named_type.default %}
+            DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+      {%- else %}
+            NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
+      {%- endif %}
+    {%- endfor %}
+        ),
+  {%- endfor %}
+    ]
+{%- endif %}
+{%- if not addition_named_types and not extension_addition_groups %}
+    componentType = rootComponent
+{%- elif addition_named_types and not extension_addition_groups %}
+    componentType = rootComponent + extensionAddition
+{%- elif not addition_named_types and extension_addition_groups %}
+    componentType = rootComponent + extensionAdditionGroups
+{%- else %}
+    componentType = rootComponent + extensionAddition + extensionAdditionGroups
+{%- endif %}
+
+
+

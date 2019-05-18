@@ -1,0 +1,81 @@
+ComponentTypesContainingComponent DEFINITIONS AUTOMATIC TAGS::=
+BEGIN
+    MySeq1 ::= SEQUENCE {
+        data CHOICE {
+            inner-seq     InnerSequence,
+            my-int-1      INTEGER,
+            my-int-2      INTEGER (1..2),
+            my-bit        MyBitString
+        },
+        my-int-3  INTEGER (10..20),
+        my-octet  OCTET STRING
+    }
+
+    InnerSequence ::= SEQUENCE {
+        i0    INTEGER,
+        i1    INTEGER
+    }
+
+    MyBitString ::= BIT STRING (SIZE(1..maxNumber, ...))
+
+    MySeq2 ::= SEQUENCE {
+        i0          INTEGER,
+        enum-one    ENUMERATED {
+            one,
+            two,
+            ...
+        },
+        o1          OCTET STRING (SIZE(1..10))
+    }
+
+    SrcTcpData ::= SEQUENCE {
+        data SEQUENCE (SIZE(1..maxNumber)) OF TcpData,
+        ...
+    }
+
+    TgtTcpData ::= SEQUENCE {
+        data SEQUENCE (SIZE(1..maxNumber)) OF TcpData,
+        ...
+    }
+
+    SrcUdpData ::= SEQUENCE {
+        data SEQUENCE (SIZE(1..maxNumber)) OF SrcUdpTput,
+        ...
+    }
+
+    TgtUdpData ::= SEQUENCE {
+        data SEQUENCE (SIZE(1..maxNumber)) OF TgtUdpTput,
+        ...
+    }
+
+    IpData ::= SEQUENCE {
+        data SEQUENCE (SIZE(1..maxNumber)) OF BigIpData,
+        ...
+    }
+
+    MyChoice ::= CHOICE {
+        enum-two    ENUMERATED {
+            three,
+            four
+        },
+        inner-seq-2    SEQUENCE {
+            i0    INTEGER,
+            i1    BIT STRING (SIZE(1..2))
+        },
+        o1    OCTET STRING (SIZE(1..10)),
+        my-int-4  INTEGER
+
+    }
+
+    TcpData ::= INTEGER
+    SrcUdpTput ::= INTEGER
+    TgtUdpTput ::= INTEGER
+
+    BigIpData ::= SEQUENCE {
+        d0    INTEGER (-1..1),
+        d1    OCTET STRING (SIZE(1..20))
+    }
+
+    minNumber INTEGER ::= -10
+    maxNumber INTEGER ::= 255
+END

@@ -1,0 +1,36 @@
+SequenceSimpleTypes DEFINITIONS AUTOMATIC TAGS::= BEGIN
+    MySeq ::= SEQUENCE {
+        d00     INTEGER DEFAULT 10,
+        d01     INTEGER DEFAULT 0,
+        d02     MyInteger DEFAULT 11,
+        d03     MyInteger DEFAULT 0,
+        d04     OCTET STRING DEFAULT '11111111'B,
+        d05     OCTET STRING DEFAULT ''B,
+        d06     OCTET STRING DEFAULT 'AAAA'H,
+        d07     OCTET STRING DEFAULT ''H,
+        d08     MyOctetString DEFAULT '01010101'B,
+        d09     MyOctetString DEFAULT ''B,
+        d10     MyOctetString DEFAULT 'BBBB'H,
+        d11     MyOctetString DEFAULT ''H,
+        d12     BIT STRING DEFAULT '0000'B,
+        d13     BIT STRING DEFAULT ''B,
+        d14     BIT STRING DEFAULT 'DDDD'H,
+        d15     BIT STRING DEFAULT ''H,
+        d16     MyBitString DEFAULT '10101'B,
+        d17     MyBitString DEFAULT ''B,
+        d18     MyBitString DEFAULT 'EE'H,
+        d19     MyBitString DEFAULT ''H,
+        d20     BOOLEAN DEFAULT FALSE,
+        d21     BOOLEAN DEFAULT TRUE,
+        d22     MyBoolean DEFAULT FALSE,
+        d23     MyBoolean DEFAULT TRUE,
+        d24     ENUMERATED {one, two, three} DEFAULT two,
+        d25     MyEnumerated DEFAULT six
+    }
+
+    MyInteger ::= INTEGER
+    MyOctetString ::= OCTET STRING
+    MyBitString ::= BIT STRING
+    MyBoolean ::= BOOLEAN
+    MyEnumerated ::= ENUMERATED {four, five, six}
+END

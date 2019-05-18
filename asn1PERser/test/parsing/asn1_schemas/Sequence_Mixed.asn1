@@ -1,0 +1,35 @@
+MySchema DEFINITIONS ::= BEGIN
+    MySeq ::= SEQUENCE {
+        some-seq   DataSeq,
+        some-enum   ENUMERATED {one, two, three},
+        some-integer   DataInt,
+        some-seqOf  SEQUENCE OF OctetName
+    }
+
+    DataSeq ::= SEQUENCE {
+        myBool0    BOOLEAN,
+        myBitString    BIT STRING,
+        myInnerSeq    MyInnerSeq
+    }
+
+    DataInt ::= INTEGER
+
+    OctetName ::= OCTET STRING
+
+    MySeqOf ::= SEQUENCE OF INTEGER
+
+    MyInnerSeq ::= SEQUENCE {
+        one    INTEGER,
+        two    MySeqOf
+    }
+
+    MySeq-Two  ::= SEQUENCE {
+        records     Record-List
+    }
+
+    Record-One ::= SEQUENCE {
+        value    INTEGER
+    }
+
+    Record-List ::= SEQUENCE OF Record-One
+END

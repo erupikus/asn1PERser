@@ -1,0 +1,24 @@
+class {{ class_name }}({{ class_type }}):
+{%- if extension_marker %}
+    subtypeSpec = ExtensionMarker(True)
+{%- endif %}
+    enumerationRoot = NamedValues(
+{%- for named_value in root_named_values %}
+        ('{{ named_value.field_name }}', {{ named_value.field_index }}),
+{%- endfor %}
+    )
+{%- if addition_named_values %}
+    extensionAddition = NamedValues(
+  {%- for named_value in addition_named_values %}
+        ('{{ named_value.field_name }}', {{ named_value.field_index }}),
+  {%- endfor %}
+    )
+{%- endif %}
+{%- if not addition_named_values %}
+    namedValues = enumerationRoot
+{%- else %}
+    namedValues = enumerationRoot + extensionAddition
+{%- endif %}
+
+
+

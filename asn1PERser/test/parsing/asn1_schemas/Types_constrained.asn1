@@ -1,0 +1,19 @@
+SimpleTypes DEFINITIONS ::=
+BEGIN
+    MyInt1 ::= INTEGER (-5..-1)
+    MyInt2 ::= INTEGER (-25..20000000, ...)
+    MyInt3 ::= INTEGER (-25..MAX)
+    MyInt4 ::= INTEGER (MIN..0)
+    MyInt5 ::= INTEGER (MIN..maxNumber)
+    MyOctetString1 ::= OCTET STRING (SIZE(1..4))
+    MyOctetString2 ::= OCTET STRING (SIZE(0..30, ...))
+    MyOctetString3 ::= OCTET STRING (SIZE(0..maxNumber, ...))
+    MyBitString1 ::= BIT STRING (SIZE(10..100))
+    MyBitString2 ::= BIT STRING (SIZE(100..10000, ...))
+    MyBitString3 ::= BIT STRING (SIZE(0..maxNumber, ...))
+
+    MySeqOf1 ::= SEQUENCE (SIZE(1..maxNumber)) OF OCTET STRING
+    MySeqOf2 ::= SEQUENCE (SIZE(1..maxNumber, ...)) OF MyBitString1
+
+    maxNumber INTEGER ::= 255
+END

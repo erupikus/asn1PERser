@@ -1,0 +1,23 @@
+ComponentTypes DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+    Order ::= CHOICE {
+        move    MoveOrder,
+        sendData    Data
+    }
+
+    MoveOrder ::= CHOICE {
+        up    Meters,
+        down  Meters,
+        left  Meters,
+        right Meters
+    }
+
+    Meters ::= INTEGER
+
+    Picture ::= OCTET STRING
+
+    Data ::= SEQUENCE {
+        id    INTEGER,
+        pictures    SEQUENCE OF Picture
+    }
+END

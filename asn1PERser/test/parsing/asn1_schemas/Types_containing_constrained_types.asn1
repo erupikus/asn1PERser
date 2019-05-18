@@ -1,0 +1,44 @@
+TypesContainingConstrained DEFINITIONS ::=
+BEGIN
+    MySeq1 ::= SEQUENCE {
+        my-Int1    INTEGER (minNumber..10, ...),
+        my-Int2    INTEGER,
+        myBitString1    BIT STRING (SIZE(0..maxNumber)),
+        myOctetString1    OCTET STRING (SIZE(1..4)),
+        ...
+    }
+
+    MySeq2 ::= SEQUENCE {
+        myInt3    INTEGER,
+        myOctetString2    OCTET STRING (SIZE(1..4, ...)),
+        myInt4    INTEGER (MIN..1)
+    }
+
+    DataList ::= SEQUENCE (SIZE(1..10)) OF Data
+
+    Data ::= SEQUENCE {
+        i0    INTEGER (0..MAX),
+        i1    OCTET STRING,
+        ...,
+        i2    OCTET STRING (SIZE(1..10))
+    }
+
+    MyChoice ::= CHOICE {
+        c0    OCTET STRING (SIZE(0..maxNumber, ...)),
+        c1    INTEGER,
+        c-two    INTEGER (MIN..0),
+        ...,
+        c3    MyEnum,
+        c4    BIT STRING (SIZE(0..20))
+    }
+
+    MyEnum ::= ENUMERATED {
+        one,
+        two,
+        three,
+        ...
+    }
+
+    minNumber INTEGER ::= -10
+    maxNumber INTEGER ::= 255
+END

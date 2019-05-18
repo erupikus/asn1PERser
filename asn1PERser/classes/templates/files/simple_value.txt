@@ -1,0 +1,4 @@
+{{ valuereference }} = {{ class_type }}({{ value }})
+
+
+

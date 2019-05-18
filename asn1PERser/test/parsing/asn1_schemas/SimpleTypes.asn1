@@ -1,0 +1,33 @@
+SimpleTypes DEFINITIONS ::=
+BEGIN
+    MyInt ::= INTEGER
+    My-Int ::= INTEGER
+    MyBool ::= BOOLEAN
+    My-Bool ::= BOOLEAN
+    MyOctetString ::= OCTET STRING
+    My-Octet-String ::= OCTET STRING
+    MyBitString ::= BIT STRING
+    My-Bit-String ::= BIT STRING
+    MyEnumerated ::= ENUMERATED {one, two, three}
+    My-Enumerated ::= ENUMERATED {one, two, three}
+
+    constant-Int INTEGER ::= 10
+    constant-Bool BOOLEAN ::= TRUE
+    constant-Octet-String-one OCTET STRING ::= 'DEAD'H
+    constant-Octet-String-two OCTET STRING ::= '11110000'B
+    constant-Bit-String-one BIT STRING ::= 'BEEF'H
+    constant-Bit-String-two BIT STRING ::= '01010101'B
+
+    my-constant-Int MyInt ::= 200
+    my-constant-Int-Two My-Int ::= 12345
+    my-constant-Bool MyBool ::= FALSE
+    my-constant-Bool-Two My-Bool ::= TRUE
+    my-constant-Octet-String-one MyOctetString ::= 'FEED'H
+    my-constant-Octet-String-one-Two My-Octet-String ::= 'DEEF'H
+    my-constant-Octet-String-two MyOctetString ::= '00001111'B
+    my-constant-Octet-String-two-Two My-Octet-String ::= '11110000'B
+    my-constant-Bit-String-one MyBitString ::= 'ABCD'H
+    my-constant-Bit-String-one-Two My-Bit-String ::= 'DCBA'H
+    my-constant-Bit-String-two MyBitString ::= '10101010'B
+    my-constant-Bit-String-two-Two My-Bit-String ::= '01010101'B
+END

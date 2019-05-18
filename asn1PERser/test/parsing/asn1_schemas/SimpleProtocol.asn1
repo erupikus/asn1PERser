@@ -1,0 +1,50 @@
+SimpleProtocol DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+SimpleMessage ::= CHOICE {
+    start    Start,
+    stop     Stop,
+    alive    Alive,
+    data     Data,
+    ...
+}
+
+Start ::= SEQUENCE {
+    sequenceNumber    SequenceNumber,
+    timestamp         UTC-Timestamp,
+    srcPort           Port,
+    dstPort           Port
+}
+
+Stop ::= SEQUENCE {
+    sequenceNumber    SequenceNumber,
+    timestamp         UTC-Timestamp,
+    srcPort           Port,
+    dstPort           Port
+}
+
+Alive ::= SEQUENCE {
+    timestamp         UTC-Timestamp,
+    ...
+}
+
+Data ::= SEQUENCE {
+    sequenceNumber    SequenceNumber,
+    swRelease         ENUMERATED {rel1, rel2, rel3, ...},
+    macroId           BIT STRING (SIZE(20)) OPTIONAL,
+    payload           Payload
+}
+
+Port ::= INTEGER (10000..65535)
+
+SequenceNumber ::= INTEGER (0..65535)
+
+UTC-Timestamp ::= SEQUENCE {
+    seconds     INTEGER (0..4294967295),
+    useconds    INTEGER (0..4294967295)
+}
+
+Payload ::= SEQUENCE (SIZE(1..5)) OF Message
+
+Message ::= OCTET STRING (SIZE(1..4))
+
+END

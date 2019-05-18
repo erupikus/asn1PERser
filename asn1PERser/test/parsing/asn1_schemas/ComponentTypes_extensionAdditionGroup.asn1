@@ -1,0 +1,54 @@
+ExtensionAdditionGroups DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+
+Data1 ::= SEQUENCE {
+    d0    OCTET STRING,
+    ...,
+    [[
+    d1    BIT STRING (SIZE(1..20, ...)),
+    d2    MySeq
+    ]]
+}
+
+
+Data2 ::= CHOICE {
+    c0   INTEGER (1..MAX),
+    ...,
+    [[
+    c1   MyEnum,
+    c2   BOOLEAN
+    ]],
+    [[
+    c3   OCTET STRING (SIZE(5..10)),
+    c4   MySeq
+    ]]
+}
+
+
+Data3 ::= SEQUENCE {
+    s0    INTEGER,
+    ...,
+    s4   INTEGER,
+    s5   INTEGER,
+    [[
+    s1   MySeq,
+    s2   INTEGER OPTIONAL
+    ]],
+    [[
+    s3   INTEGER (-10..100),
+    s6   MyEnum
+    ]]
+}
+
+MyEnum ::= ENUMERATED {
+   one,
+   two
+}
+
+MySeq ::= SEQUENCE {
+   i0    INTEGER (10..20),
+   i1    INTEGER
+}
+
+END
