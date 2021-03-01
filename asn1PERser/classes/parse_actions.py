@@ -3,7 +3,7 @@ from collections import namedtuple
 from asn1PERser.classes.types.builtin import SequenceType, DefinedType, \
     VisibleString, NumericString, IntegerType, DateType, RealType, BooleanType, \
     ChoiceType, EnumeratedType, IA5String, UTF8String, OctetStringType, \
-    BitStringType, SequenceOfType
+    BitStringType, SequenceOfType, builtin_types
 from asn1PERser.classes.module import ModuleDefinition, typereference_to_type
 from asn1PERser.asn_definitions.constraint_def import Constraint
 
@@ -33,7 +33,9 @@ def parse_ValueAssignment(toks):
 def parse_TypeAssignment(toks):
     item_typereference = toks[0]
     item_type = toks[2][0]
-    item_type.typereference = item_typereference
+
+    if item_type.typereference in builtin_types:
+        item_type.typereference = item_typereference
     typereference_to_type[item_typereference] = deepcopy(item_type)
     return item_type
 

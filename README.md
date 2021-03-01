@@ -436,3 +436,7 @@ This library inherits extensively from pyasn1 library so BER and other encoding 
 
 Parsing may take time - when trying to parse about 2000 lines of ASN.1 it took 15-20 minutes.
 Tests for parsing also take time.
+
+## History
+
+See CHANGES file.

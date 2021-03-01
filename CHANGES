@@ -1,0 +1,13 @@
+Version 0.2.1
+----------------
+- fix issue when new type was assigned to defined type, like:
+
+  MyInt1 ::= INTEGER (-5..-1)
+  MyInt2 ::= MyInt1
+
+  Here MyInt2 is a type of MyInt1, which caused infinite recurrence
+  when creating Python code.
+
+Version 0.2.0
+----------------
+- Initial release

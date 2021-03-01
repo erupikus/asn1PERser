@@ -14,3 +14,8 @@ from .SequenceType import SequenceType
 from .SequenceOfType import SequenceOfType
 from .UTF8String import UTF8String
 from .VisibleString import VisibleString
+
+
+builtin_types = ['BitStringType', 'BooleanType', 'ChoiceType', 'DateType', 'EnumeratedType', 'IA5String', 'IntegerType',
+                 'NullType', 'NumericString', 'OctetStringType', 'RealType', 'SequenceType', 'SequenceOfType',
+                 'UTF8String', 'VisibleString']

@@ -1,0 +1,43 @@
+DefinedTypeCheck DEFINITIONS AUTOMATIC TAGS::= BEGIN
+    MySeq1 ::= SEQUENCE {
+        d00     INTEGER DEFAULT 10,
+        d01     INTEGER DEFAULT 0
+    }
+
+    MyInt1 ::= INTEGER (-5..-1)
+    MyOctetString1 ::= OCTET STRING (SIZE(1..4))
+    MyBitString1 ::= BIT STRING
+    MyBoolean1 ::= BOOLEAN
+    MyEnumerated1 ::= ENUMERATED {four, five, six}
+
+    MyInt2 ::= MyInt1
+    MyInt3 ::= MyInt2
+
+    MyOctetString2 ::= MyOctetString1
+    MyOctetString3 ::= MyOctetString2
+
+    MyBitString2 ::= MyBitString1
+    MyBitString3 ::= MyBitString2
+
+    MyBoolean2 ::= MyBoolean1
+    MyBoolean3 ::= MyBoolean2
+
+    MyEnumerated2 ::= MyEnumerated1
+    MyEnumerated3 ::= MyEnumerated2
+
+    MySeq2 ::= MySeq1
+
+    MySeq3 ::= SEQUENCE {
+        d03     MyInt2,
+        d04     MyInt3,
+        d05     MyOctetString2,
+        d06     MyOctetString3,
+        d07     MyBitString2,
+        d08     MyBitString3,
+        d09     MyBoolean2,
+        d10     MyBoolean3,
+        d11     MyEnumerated2,
+        d12     MyEnumerated3
+    }
+
+END
