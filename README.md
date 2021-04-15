@@ -423,6 +423,28 @@ SimpleMessage:
 rel3
 ```
 
+When encoded bytes are given as __string__ use _bytearray.fromhex()_:
+
+```python
+'''
+pure_string = str('70d90320f0f0f880dead40beef40feed00aac0bbbbbbbb')
+real_bytes = bytearray.fromhex(pure_string)
+
+decoded = decode(asn1Spec=SimpleMessage(), per_stream=real_bytes)
+print(decoded)
+```
+
+above will output:
+```
+SimpleMessage:
+ data=Data:
+  sequenceNumber=55555
+  swRelease=rel2
+  macroId=986895
+  payload=Payload:
+   0xdead   0xbeef   0xfeed   0xaa   0xbbbbbbbb
+```
+
 ## Additional information
 
 For more examples please see library tests:
