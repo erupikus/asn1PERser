@@ -70,7 +70,7 @@ def DATA_first_sequence():
 
 def test_first_sequence_can_be_encoded():
     per_encoded = per_encoder(asn1Spec=DATA_first_sequence())
-    assert per_encoded == bytes.fromhex('8004F401640202DEAD02BEEF')
+    assert per_encoded == bytearray.fromhex('8004F401640202DEAD02BEEF')
 
 #-------------------------------------
 
@@ -159,7 +159,7 @@ def DATA_seq__of__seq_of__of__seq_in_root(my_sof1_is=False, my_sof2_is=False):
     (DATA_seq__of__seq_of__of__seq_in_root(my_sof1_is=False, my_sof2_is=True), '40011E0128'),
 ])
 def test_seq_of_seq_of_of_seq_in_root_can_be_encoded(data, encoded):
-    assert per_encoder(asn1Spec=data) == bytes.fromhex(encoded)
+    assert per_encoder(asn1Spec=data) == bytearray.fromhex(encoded)
 
 
 #-----------------------------
@@ -230,7 +230,7 @@ def DATA_seq__of__seq_of__of__seq_in_ext_add(my_sof1_is=False, my_sof2_is=False)
     (DATA_seq__of__seq_of__of__seq_in_ext_add(my_sof1_is=False, my_sof2_is=False), '0001F6'),
 ])
 def test_seq_of_seq_of_of_seq_in_extension_addition_can_be_encoded(data, encoded):
-    assert per_encoder(asn1Spec=data) == bytes.fromhex(encoded)
+    assert per_encoder(asn1Spec=data) == bytearray.fromhex(encoded)
 
 #----------------------------------
 
@@ -304,4 +304,4 @@ def DATA_seq__of__seq_of__of__seq_in_ext_add_group(my_sof1_is=False, my_sof2_is=
     (DATA_seq__of__seq_of__of__seq_in_ext_add_group(my_sof1_is=False, my_sof2_is=False), '0001F6'),
 ])
 def test_seq_of_seq_of_of_seq_in_extension_addition_group_can_be_encoded(data, encoded):
-    assert per_encoder(asn1Spec=data) == bytes.fromhex(encoded)
+    assert per_encoder(asn1Spec=data) == bytearray.fromhex(encoded)

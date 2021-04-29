@@ -112,19 +112,20 @@ def DATA_data_message_2():
 
 def test_alive_message_can_be_encoded():
     per_encoded = encode(asn1Spec=DATA_alive_message())
-    assert per_encoded == bytes.fromhex('4C5CD5FE55403039')
+    # assert per_encoded == bytes.fromhex('4C5CD5FE55403039')
+    assert per_encoded == bytearray.fromhex('4C5CD5FE55403039')
 
 
 def test_start_message_can_be_encoded():
     per_encoded = encode(asn1Spec=DATA_start_message())
-    assert per_encoded == bytes.fromhex('00000AC05CD5FE55403039D8ED0000')
+    assert per_encoded == bytearray.fromhex('00000AC05CD5FE55403039D8ED0000')
 
 
 def test_data_message_1_can_be_encoded():
     per_encoded = encode(asn1Spec=DATA_data_message_1())
-    assert per_encoded == bytes.fromhex('70D90320F0F0F880DEAD40BEEF40FEED00AAC0BBBBBBBB')
+    assert per_encoded == bytearray.fromhex('70D90320F0F0F880DEAD40BEEF40FEED00AAC0BBBBBBBB')
 
 
 def test_data_message_2_can_be_encoded():
     per_encoded = encode(asn1Spec=DATA_data_message_2())
-    assert per_encoded == bytes.fromhex('60010043DEADBEEF')
+    assert per_encoded == bytearray.fromhex('60010043DEADBEEF')

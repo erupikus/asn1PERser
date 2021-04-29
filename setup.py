@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="asn1PERser",
-    version="0.2.1",
+    version="0.3.0",
     author="Maciej Pikuła",
     author_email="erupikus@gmail.com",
     description="Parse ASN.1 schemas into Python code and encode/decode them using PER encoder",
@@ -20,9 +20,11 @@ setuptools.setup(
     install_requires=[
         "pyasn1",
         "pyparsing",
-        "Jinja2"
+        "Jinja2",
+        "future",
     ],
     classifiers=[
+        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

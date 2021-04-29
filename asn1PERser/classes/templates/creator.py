@@ -2,7 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-class TemplateFiller:
+class TemplateFiller(object):
     def __init__(self):
         file_loader = FileSystemLoader(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files/'))
         self.env = Environment(loader=file_loader)

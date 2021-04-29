@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class OctetStringType(SimpleType):
     def __init__(self):
-        super().__init__()
+        super(OctetStringType, self).__init__()
         self.typereference = self.__class__.__name__
 
     def fill_template(self, has_parent=False):
@@ -32,4 +32,4 @@ class OctetStringType(SimpleType):
             return "hexValue={}".format(value[:-1])
 
     def __repr__(self):
-        return '\t' + super().__repr__() + '\n'
+        return '\t' + super(OctetStringType, self).__repr__() + '\n'

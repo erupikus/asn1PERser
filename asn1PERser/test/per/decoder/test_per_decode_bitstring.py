@@ -22,7 +22,7 @@ from asn1PERser.test.per.encoder.test_per_encode_bitstring import SCHEMA_constra
                                                                        bin_val='0000111000000000010000001111110000000000000001')),
 ])
 def test_no_constrain_bitstring_as_binary_value_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -46,14 +46,14 @@ def test_no_constrain_bitstring_as_binary_value_can_be_decoded(schema, encoded, 
 
 ])
 def test_no_constrain_bitstring_as_hex_value_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
     (SCHEMA_constrained_bitstring(lb=0, ub=0), '00', DATA_bitstring(SCHEMA_constrained_bitstring(lb=0, ub=0), bin_val='')),
 ])
 def test_constrained_bitstring_of_zero_length_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -75,7 +75,7 @@ def test_constrained_bitstring_of_zero_length_can_be_decoded(schema, encoded, va
     (SCHEMA_constrained_bitstring(lb=16, ub=16), '2222', DATA_bitstring(SCHEMA_constrained_bitstring(lb=16, ub=16), hex_val='2222')),
 ])
 def test_constrained_bitstring_same_length_gt_zero_and_le_16_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -94,7 +94,7 @@ def test_constrained_bitstring_same_length_gt_zero_and_le_16_can_be_decoded(sche
                                                                                                                   hex_val='ABCDEFABCDEF0123456789ABCDEFABCDEF0123456789')),
 ])
 def test_constrained_bitstring_same_length_gt_16_and_lt_64K_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -108,7 +108,7 @@ def test_constrained_bitstring_same_length_gt_16_and_lt_64K_can_be_decoded(schem
     (SCHEMA_constrained_bitstring(lb=0, ub=65535), '000FE38E', DATA_bitstring(SCHEMA_constrained_bitstring(lb=0, ub=65535), bin_val='111000111000111')),
 ])
 def test_constrained_bitstring_with_ub_less_then_64K_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -131,4 +131,4 @@ def test_constrained_bitstring_with_ub_less_then_64K_can_be_decoded(schema, enco
                                                                                                             hex_val='ABCDEFABCDEF0123456789ABCDEFABC0')),
 ])
 def test_constrained_bitstring_with_extension_marker_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

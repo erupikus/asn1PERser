@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class IntegerType(SimpleType):
     def __init__(self):
-        super().__init__()
+        super(IntegerType, self).__init__()
         self.typereference = self.__class__.__name__
 
     def fill_template(self, has_parent=False):
@@ -26,4 +26,4 @@ class IntegerType(SimpleType):
         return ''
 
     def __repr__(self):
-        return '\t' + super().__repr__() + '\n'
+        return '\t' + super(IntegerType, self).__repr__() + '\n'

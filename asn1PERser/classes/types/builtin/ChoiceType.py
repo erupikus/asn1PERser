@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class ChoiceType(ComponentType):
     def __init__(self):
-        super().__init__()
+        super(ChoiceType, self).__init__()
         self.typereference = self.__class__.__name__
         self._AlternativeTypeList = []
 
@@ -25,7 +25,7 @@ class ChoiceType(ComponentType):
             if AlternativeType == ']]':
                 in_extension_addition_group = False
                 extension_addition_groups.append(list(single_extension_group))
-                single_extension_group.clear()
+                del single_extension_group[:]
                 continue
             if in_extension_addition_group:
                 single_extension_group.append(self._fill_named_types(AlternativeType))
@@ -90,5 +90,5 @@ class ChoiceType(ComponentType):
             alternatives = ''
             for AlternativeType in self.AlternativeTypeList:
                 alternatives += '\t' + str(AlternativeType).rstrip() + '\n'
-            return '\t' + super().__repr__() + '\n' + alternatives
-        return '\t' + super().__repr__()
+            return '\t' + super(ChoiceType, self).__repr__() + '\n' + alternatives
+        return '\t' + super(ChoiceType, self).__repr__()

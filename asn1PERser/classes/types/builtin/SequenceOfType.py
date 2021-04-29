@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class SequenceOfType(ComponentType):
     def __init__(self):
-        super().__init__()
+        super(SequenceOfType, self).__init__()
         self._ComponentType = None
         self.typereference = self.__class__.__name__
 
@@ -36,4 +36,4 @@ class SequenceOfType(ComponentType):
         self._ComponentType = ComponentType
 
     def __repr__(self):
-        return '\t' + super().__repr__() + ' ' + str(self.ComponentType) + '\n'
+        return '\t' + super(SequenceOfType, self).__repr__() + ' ' + str(self.ComponentType) + '\n'

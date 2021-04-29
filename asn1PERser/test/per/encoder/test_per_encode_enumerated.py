@@ -110,7 +110,7 @@ enumeration_list = ['e0',   'e1',   'e2',   'e3',   'e4',   'e5',   'e6',   'e7'
     (DATA_my_enum(SCHEMA_my_enum(enumerationRoot_list=enumeration_list[0:260]), 'e256'), '0100'),
 ])
 def test_no_extension_marker_enumerated_can_be_encoded(enumerated, encoded):
-    assert per_encoder(enumerated) == bytes.fromhex(encoded)
+    assert per_encoder(enumerated) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("enumerated, encoded", [
@@ -130,7 +130,7 @@ def test_no_extension_marker_enumerated_can_be_encoded(enumerated, encoded):
     (DATA_my_enum(SCHEMA_my_enum(enumerationRoot_list=enumeration_list[0:260], extensionMarker_value=True), 'e256'), '000100'),
 ])
 def test_extension_marker_is_present_and_extension_addition_is_empty_but_value_is_from_root_can_be_encoded(enumerated, encoded):
-    assert per_encoder(enumerated) == bytes.fromhex(encoded)
+    assert per_encoder(enumerated) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("enumerated, encoded", [
@@ -150,7 +150,7 @@ def test_extension_marker_is_present_and_extension_addition_is_empty_but_value_i
     (DATA_my_enum(SCHEMA_my_ext_enum(enumerationRoot_list=enumeration_list[0:260], extensionAddition_list=short_enum, extensionMarker_value=True), 'e256'), '000100'),
 ])
 def test_extension_marker_is_present_and_extension_addition_is_not_empty_but_value_is_from_root_can_be_encoded(enumerated, encoded):
-    assert per_encoder(enumerated) == bytes.fromhex(encoded)
+    assert per_encoder(enumerated) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("enumerated, encoded", [
@@ -170,7 +170,7 @@ def test_extension_marker_is_present_and_extension_addition_is_not_empty_but_val
     (DATA_my_enum(SCHEMA_my_ext_enum(enumerationRoot_list=short_enum, extensionAddition_list=enumeration_list[0:260], extensionMarker_value=True), 'e256'), 'C0020100'),
 ])
 def test_extension_marker_is_present_and_value_is_from_extension_can_be_encoded(enumerated, encoded):
-    assert per_encoder(enumerated) == bytes.fromhex(encoded)
+    assert per_encoder(enumerated) == bytearray.fromhex(encoded)
 
 
 

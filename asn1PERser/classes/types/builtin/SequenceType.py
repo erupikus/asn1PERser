@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class SequenceType(ComponentType):
     def __init__(self):
-        super().__init__()
+        super(SequenceType, self).__init__()
         self._ComponentTypeList = []
         self.typereference = self.__class__.__name__
 
@@ -25,7 +25,7 @@ class SequenceType(ComponentType):
             if ComponentType == ']]':
                 in_extension_addition_group = False
                 extension_addition_groups.append(list(single_extension_group))
-                single_extension_group.clear()
+                del single_extension_group[:]
                 continue
             if in_extension_addition_group:
                 single_extension_group.append(self._fill_named_types(ComponentType))
@@ -99,5 +99,5 @@ class SequenceType(ComponentType):
             components = ''
             for ComponentType in self.ComponentTypeList:
                 components += '\t' + str(ComponentType).rstrip() + '\n'
-            return '\t' + super().__repr__() + '\n' + components
-        return '\t' + super().__repr__()
+            return '\t' + super(SequenceType, self).__repr__() + '\n' + components
+        return '\t' + super(SequenceType, self).__repr__()

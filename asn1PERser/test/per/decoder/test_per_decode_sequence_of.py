@@ -19,7 +19,7 @@ from asn1PERser.test.per.encoder.test_per_encode_sequence_of import SCHEMA_const
         DATA_seq_of(SCHEMA_no_constrains_sequence_of(), i0_is=True, i1_is=True, i2_is=True, i3_is=True, i4_is=True)),
 ])
 def test_no_constrains_sequence_of_integer_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -37,7 +37,7 @@ def test_no_constrains_sequence_of_integer_can_be_decoded(schema, encoded, value
         DATA_seq_of(SCHEMA_constrained_seq_of_no_extension(lb=2, ub=5), i0_is=True, i1_is=True, i2_is=True, i3_is=True, i4_is=True)),
 ])
 def test_constrained_sequence_of_no_extension_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -53,7 +53,7 @@ def test_constrained_sequence_of_no_extension_can_be_decoded(schema, encoded, va
         DATA_seq_of(SCHEMA_constrained_seq_of_no_extension(lb=5, ub=5), i0_is=True, i1_is=True, i2_is=True, i3_is=True, i4_is=True)),
 ])
 def test_constrained_sequence_of_of_fixed_length_no_extension_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -71,7 +71,7 @@ def test_constrained_sequence_of_of_fixed_length_no_extension_can_be_decoded(sch
         DATA_seq_of(SCHEMA_constrained_seq_of_extension_present(lb=2, ub=5), i0_is=True, i1_is=True, i2_is=True, i3_is=True, i4_is=True)),
 ])
 def test_constrained_sequence_of_with_extension_and_num_of_elems_is_within_extension_root_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -95,4 +95,4 @@ def test_constrained_sequence_of_with_extension_and_num_of_elems_is_within_exten
         DATA_seq_of(SCHEMA_constrained_seq_of_extension_present(lb=3, ub=4), i0_is=True, i1_is=False, i2_is=False, i3_is=False, i4_is=False)),
 ])
 def test_constrained_sequence_of_with_extension_and_num_of_elems_is_not_within_extension_root_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value

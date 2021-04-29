@@ -1,3 +1,4 @@
+import binascii
 from collections import deque
 from .encoder import bit_field_size, get_bit_field_size, integer_range, get_range_octet_len, \
     is_constrained_whole_number, is_semi_constrained_whole_number, is_constant
@@ -6,7 +7,7 @@ from .encoder import bit_field_size, get_bit_field_size, integer_range, get_rang
 __all__ = ['decode']
 
 
-class Offset:
+class Offset(object):
     def __init__(self, octets=0, bits=0):
         self.prev_octets = octets
         self.prev_bits = bits
@@ -31,7 +32,7 @@ class Offset:
             self.curr_bits = 0
 
 
-class PerBytes:
+class PerBytes(object):
     def __init__(self, byte_string):
         self.offset = Offset()
         self.binary_string = bin(int(byte_string, 16))[2:].zfill(len(byte_string) * 4)
@@ -55,7 +56,7 @@ class PerBytes:
 
 
 def decode(per_stream, asn1Spec):
-    per_bytes = PerBytes(per_stream.hex())
+    per_bytes = PerBytes(binascii.hexlify(per_stream))
     decoded = asn1Spec.create_field_list(per_bytes)
     if decoded == '':
         return asn1Spec.__class__('')
@@ -179,17 +180,17 @@ def decode_octetstring(octetstring, per_bytes):
             if octetstring_length_determinant == 0:
                 return octetstring.__class__(octetstring.__class__.fromHexString(''))
             octetstring_val = per_bytes.next(size=bit_field_size(octets=octetstring_length_determinant, bits=0))
-            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].zfill(octetstring_length_determinant * 2)))
+            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].rstrip("L").zfill(octetstring_length_determinant * 2)))
     if octetstring.subtypeSpec.upperEndpoint == 0:  # 17.5
         return ''
     if (octetstring.subtypeSpec.lowerEndpoint is not None) and (octetstring.subtypeSpec.lowerEndpoint == octetstring.subtypeSpec.upperEndpoint):
         if octetstring.subtypeSpec.lowerEndpoint <= 2:    # 17.6
             octetstring_val  = per_bytes.next(size=bit_field_size(octets=octetstring.subtypeSpec.lowerEndpoint, bits=0))
-            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].zfill(octetstring.subtypeSpec.lowerEndpoint * 2)))
+            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].rstrip("L").zfill(octetstring.subtypeSpec.lowerEndpoint * 2)))
         elif 2 < octetstring.subtypeSpec.lowerEndpoint < 65536:  # 17.7
             per_bytes.next(size=bit_field_size(octets=0, bits=0), octet_align=True)
             octetstring_val = per_bytes.next(size=bit_field_size(octets=octetstring.subtypeSpec.lowerEndpoint, bits=0))
-            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].zfill(octetstring.subtypeSpec.lowerEndpoint * 2)))
+            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].rstrip("L").zfill(octetstring.subtypeSpec.lowerEndpoint * 2)))
         else:
             raise NotImplemented
     else:  # 17.8
@@ -202,7 +203,7 @@ def decode_octetstring(octetstring, per_bytes):
             if octetstring_length_determinant == 0:
                 return octetstring.__class__(octetstring.__class__.fromHexString(''))
             octetstring_val = per_bytes.next(size=bit_field_size(octets=octetstring_length_determinant, bits=0), octet_align=True)
-            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:]))
+            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].rstrip("L")))
         else:
             per_bytes.next(size=bit_field_size(octets=0, bits=0), octet_align=True)
             octetstring_length_determinant = decode_length_determinant(normally_small_length=False,
@@ -211,7 +212,7 @@ def decode_octetstring(octetstring, per_bytes):
                                                                        lowerBound=0,
                                                                        upperBound=None)
             octetstring_val = per_bytes.next(size=bit_field_size(octets=octetstring_length_determinant, bits=0))
-            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].zfill(octetstring_length_determinant * 2)))
+            return octetstring.__class__(octetstring.__class__.fromHexString(hex(octetstring_val)[2:].rstrip("L").zfill(octetstring_length_determinant * 2)))
 
 
 def decode_sequence(sequence, per_bytes):
@@ -416,7 +417,7 @@ def decode_open_type_field(type, per_bytes):
                                                                  lowerBound=None,
                                                                  upperBound=None)
     val = per_bytes.next(size=bit_field_size(octets=unconstrained_length_determinant, bits=0), octet_align=True)
-    open_type_value = PerBytes(hex(val)[2:].zfill(unconstrained_length_determinant * 2))
+    open_type_value = PerBytes(hex(val)[2:].rstrip("L").zfill(unconstrained_length_determinant * 2))
     decoded = type.create_field_list(open_type_value)
     return decoded
 
@@ -514,10 +515,10 @@ def decode_length_determinant(normally_small_length, constrained, n, lowerBound,
 
 
 def create_new_fake_empty_sequence(rootComponent):
-    class FooConstraint():
+    class FooConstraint(object):
         pass
 
-    class FakeSequence:
+    class FakeSequence(object):
         subtypeSpec = FooConstraint()
         def __init__(self):
             self.named_types = {}

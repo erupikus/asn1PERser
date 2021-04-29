@@ -11,7 +11,7 @@ class NoConstraint(ConstraintsIntersection):
         self.extensionMarker = False
         self.lowerEndpoint = None
         self.upperEndpoint = None
-        super().__init__()
+        super(NoConstraint, self).__init__()
 
 
 class ExtensionMarker(ConstraintsIntersection):
@@ -19,7 +19,7 @@ class ExtensionMarker(ConstraintsIntersection):
         self.extensionMarker = present
         self.lowerEndpoint = None
         self.upperEndpoint = None
-        super().__init__()
+        super(ExtensionMarker, self).__init__()
 
 
 class SequenceOfValueSize(ConstraintsIntersection):
@@ -44,7 +44,7 @@ class SequenceOfValueSize(ConstraintsIntersection):
         self.extensionMarker = extensionMarker
         self.lowerEndpoint = None if lower_endpoint == MIN else lower_endpoint
         self.upperEndpoint = None if upper_endpoint == MAX else upper_endpoint
-        super().__init__()
+        super(SequenceOfValueSize, self).__init__()
 
 
 class ValueRange(ValueRangeConstraint):
@@ -52,23 +52,23 @@ class ValueRange(ValueRangeConstraint):
         self.extensionMarker = extensionMarker
         self.lowerEndpoint = None if lower_endpoint == MIN else lower_endpoint
         self.upperEndpoint = None if upper_endpoint == MAX else upper_endpoint
-        super().__init__(lower_endpoint, upper_endpoint)
+        super(ValueRange, self).__init__(lower_endpoint, upper_endpoint)
 
     def _testValue(self, value, idx):
         if not self.extensionMarker:
-            return super()._testValue(value, idx)
+            return super(ValueRange, self)._testValue(value, idx)
 
 
 class SingleValue(SingleValueConstraint):
-    def __init__(self, *values, extension_marker=False):
+    def __init__(self, extension_marker=False, *values):
         self.extensionMarker = extension_marker
         self.lowerEndpoint = min(values)
         self.upperEndpoint = max(values)
-        super().__init__(*values)
+        super(SingleValue, self).__init__(*values)
 
     def _testValue(self, value, idx):
         if not self.extensionMarker:
-            return super()._testValue(value, idx)
+            return super(SingleValue, self)._testValue(value, idx)
 
 
 class ValueSize(ValueSizeConstraint):
@@ -76,32 +76,32 @@ class ValueSize(ValueSizeConstraint):
         self.extensionMarker = extensionMarker
         self.lowerEndpoint = None if lower_endpoint == MIN else lower_endpoint
         self.upperEndpoint = None if upper_endpoint == MAX else upper_endpoint
-        super().__init__(lower_endpoint, upper_endpoint)
+        super(ValueSize, self).__init__(lower_endpoint, upper_endpoint)
 
     def _testValue(self, value, idx):
         if not self.extensionMarker:
-            return super()._testValue(value, idx)
+            return super(ValueSize, self)._testValue(value, idx)
 
 
 class ConstraintOr(ConstraintsUnion):
-    def __init__(self, *constraints, extensionMarker=False):
+    def __init__(self, extensionMarker=False, *constraints):
         self.extensionMarker = extensionMarker
         self.lowerEndpoint = min([constraint.lowerEndpoint for constraint in constraints])
         self.upperEndpoint = max([constraint.upperEndpoint for constraint in constraints])
-        super().__init__(*constraints)
+        super(ConstraintOr, self).__init__(*constraints)
 
     def _testValue(self, value, idx):
         if not self.extensionMarker:
-            return super()._testValue(value, idx)
+            return super(ConstraintOr, self)._testValue(value, idx)
 
 
 class ConstraintAnd(ConstraintsIntersection):
-    def __init__(self, *constraints, extensionMarker=False):
+    def __init__(self, extensionMarker=False, *constraints):
         self.extensionMarker = extensionMarker
         self.lowerEndpoint = min([constraint.lowerEndpoint for constraint in constraints])
         self.upperEndpoint = max([constraint.upperEndpoint for constraint in constraints])
-        super().__init__(*constraints)
+        super(ConstraintAnd, self).__init__(*constraints)
 
     def _testValue(self, value, idx):
         if not self.extensionMarker:
-            return super()._testValue(value, idx)
+            return super(ConstraintAnd, self)._testValue(value, idx)

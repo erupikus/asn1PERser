@@ -116,4 +116,4 @@ class AdditiveNamedTypes(NamedTypes):
         if isinstance(other, list):
             other = AdditiveNamedTypes(*[named_type for additive_named_types in other for
                                          named_type in additive_named_types._NamedTypes__namedTypes])
-        return self.__class__(*self._NamedTypes__namedTypes, *other._NamedTypes__namedTypes)
+        return self.__class__(*(self._NamedTypes__namedTypes + other._NamedTypes__namedTypes))

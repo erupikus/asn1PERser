@@ -25,7 +25,7 @@ class ModuleDefinition(Template):
 
     def fill_template(self):
         already_filled_template.clear()
-        template = super().fill_template()
+        template = super(ModuleDefinition, self).fill_template()
         if self.ModuleBody:
             for Assignment in self.ModuleBody:
                 template += Assignment.fill_template()
@@ -43,7 +43,7 @@ class ModuleDefinition(Template):
                     simple_type_assignments.append(assignment)
             else:
                 component_type_assignments.append(assignment)
-        return [*value_assignments, *simple_type_assignments, *component_type_assignments]
+        return [] + value_assignments + simple_type_assignments + component_type_assignments
 
     @property
     def ModuleIdentifier(self):

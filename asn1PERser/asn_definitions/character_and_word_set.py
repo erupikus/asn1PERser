@@ -1,5 +1,6 @@
 from string import ascii_uppercase, ascii_lowercase, digits
 from pyparsing import oneOf
+from builtins import chr
 
 
 RESERVED_WORDS = \

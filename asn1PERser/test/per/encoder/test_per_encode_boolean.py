@@ -8,4 +8,4 @@ from asn1PERser.classes.data.builtin.BooleanType import BooleanType
     (BooleanType(value=False), '00')
 ])
 def test_boolean_type_can_be_encoded(boolean, encoded):
-    assert per_encoder(boolean) == bytes.fromhex(encoded)
+    assert per_encoder(boolean) == bytearray.fromhex(encoded)

@@ -5,7 +5,7 @@ from asn1PERser.classes.module import already_filled_template
 
 class EnumeratedType(SimpleType):
     def __init__(self):
-        super().__init__()
+        super(EnumeratedType, self).__init__()
         self._EnumerationItems = []
         self.typereference = self.__class__.__name__
 
@@ -55,5 +55,5 @@ class EnumeratedType(SimpleType):
     def __repr__(self):
         if self.EnumerationItems:
             items = ', '.join([str(item).strip() for item in self.EnumerationItems])
-            return '\t' + super().__repr__() + ' ' + '{' + items + '}' + '\n'
-        return '\t' + super().__repr__()
+            return '\t' + super(EnumeratedType, self).__repr__() + ' ' + '{' + items + '}' + '\n'
+        return '\t' + super(EnumeratedType, self).__repr__()

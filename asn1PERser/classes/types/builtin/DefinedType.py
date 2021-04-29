@@ -5,7 +5,7 @@ from asn1PERser.classes.templates.creator import template_filler
 
 class DefinedType(Type):
     def __init__(self, typereference):
-        super().__init__()
+        super(DefinedType, self).__init__()
         self.typereference = typereference
 
     def fill_template(self):
@@ -35,4 +35,4 @@ class DefinedType(Type):
 
 
     def __repr__(self):
-        return '\t' + super().__repr__() + '\n'
+        return '\t' + super(DefinedType, self).__repr__() + '\n'

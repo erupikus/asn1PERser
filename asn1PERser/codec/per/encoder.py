@@ -1,5 +1,6 @@
 from collections import namedtuple
 from collections import defaultdict
+import codecs
 
 
 __all__ = ['encode']
@@ -33,7 +34,7 @@ def encode(asn1Spec):
     field_list = []
     asn1Spec.fill_field_list(field_list)
     complete_encoding = _produce_complete_encoding(field_list)
-    return bytes.fromhex(_bin_to_hex(complete_encoding))
+    return codecs.decode(_bin_to_hex(complete_encoding), 'hex_codec')
 
 
 def _produce_complete_encoding(field_list):    # 11.1
@@ -70,11 +71,11 @@ def encode_integer(integer):
                                                                                                  lowerEndpoint=integer.subtypeSpec.lowerEndpoint,
                                                                                                  upperEndpoint=integer.subtypeSpec.upperEndpoint)
             extension_bit_field = bit_field(octet_align=False, value='0')
-            return [extension_bit_field, *constrained_whole_number_field_list]
+            return [extension_bit_field] + constrained_whole_number_field_list
         else:
             extension_bit_field = bit_field(octet_align=False, value='1')
             unconstrained_whole_number_field_list = create_field_list_for_unconstrained_whole_number(integer)
-            return [extension_bit_field, *unconstrained_whole_number_field_list]
+            return [extension_bit_field] + unconstrained_whole_number_field_list
     else:
         if is_constant(integer):    # 13.2.1
             pass
@@ -92,7 +93,7 @@ def encode_integer(integer):
                                                                          n=n,
                                                                          lowerBound=1,
                                                                          upperBound=None)
-            return [*unconstrained_length_determinant, semi_constrained_whole_number]
+            return unconstrained_length_determinant + [semi_constrained_whole_number]
 
         else:    # 13.2.4
             unconstrained_whole_number_field_list = create_field_list_for_unconstrained_whole_number(integer)
@@ -109,12 +110,12 @@ def encode_enumerated(enumerated):
             constrained_whole_number_field_list = create_field_list_for_constrained_whole_number(n=enumerated._value,
                                                                                                  lowerEndpoint=0,
                                                                                                  upperEndpoint=len(list(enumerated.enumerationRoot)) - 1)
-            return [extension_bit_field, *constrained_whole_number_field_list]
+            return [extension_bit_field] + constrained_whole_number_field_list
         else:
             n = list(enumerated.extensionAddition.values()).index(enumerated._value)
             extension_bit_field = bit_field(octet_align=False, value='1')
             normally_small_non_negative = encode_normally_small_non_negative_whole_number(n=n, lower_bound=0)
-            return [extension_bit_field, *normally_small_non_negative]
+            return [extension_bit_field] + normally_small_non_negative
 
 
 def encode_bitstring(bitstring):    # 16
@@ -135,7 +136,7 @@ def encode_bitstring(bitstring):    # 16
                                                                      n=bitstring_len,
                                                                      lowerBound=0,
                                                                      upperBound=None)
-            return [extension_bit_field, *bitstring_length_determinant, bitstring_bit_field]
+            return [extension_bit_field] + bitstring_length_determinant + [bitstring_bit_field]
     # else:    # 16.7
     if bitstring.subtypeSpec.upperEndpoint == 0:    # 16.8
         return
@@ -161,8 +162,8 @@ def encode_bitstring(bitstring):    # 16
                                                                      lowerBound=bitstring.subtypeSpec.lowerEndpoint,
                                                                      upperBound=bitstring.subtypeSpec.upperEndpoint)
             if extension_bit_field:
-                return [extension_bit_field, *bitstring_length_determinant, bitstring_bit_field]
-            return [*bitstring_length_determinant, bitstring_bit_field]
+                return [extension_bit_field] + bitstring_length_determinant + [bitstring_bit_field]
+            return bitstring_length_determinant + [bitstring_bit_field]
         else:
             bitstring_length_determinant = encode_length_determinant(normally_small_length=False,
                                                                      constrained=False,
@@ -170,8 +171,8 @@ def encode_bitstring(bitstring):    # 16
                                                                      lowerBound=0,
                                                                      upperBound=None)
             if extension_bit_field:
-                return [extension_bit_field, *bitstring_length_determinant, bitstring_bit_field]
-            return [*bitstring_length_determinant, bitstring_bit_field]
+                return [extension_bit_field] + bitstring_length_determinant + [bitstring_bit_field]
+            return bitstring_length_determinant + [bitstring_bit_field]
 
 
 def encode_octetstring(octetstring):
@@ -192,7 +193,7 @@ def encode_octetstring(octetstring):
                                                                        n=octetstring_len,
                                                                        lowerBound=octetstring.subtypeSpec.lowerEndpoint,
                                                                        upperBound=None)
-            return [extension_bit_field, *octetstring_length_determinant, octetstring_bit_field]
+            return [extension_bit_field] + octetstring_length_determinant + [octetstring_bit_field]
     if octetstring.subtypeSpec.upperEndpoint == 0:    # 17.5
         return
     if (octetstring.subtypeSpec.lowerEndpoint is not None) and (octetstring.subtypeSpec.lowerEndpoint == octetstring.subtypeSpec.upperEndpoint):
@@ -217,8 +218,8 @@ def encode_octetstring(octetstring):
                                                                        lowerBound=octetstring.subtypeSpec.lowerEndpoint,
                                                                        upperBound=octetstring.subtypeSpec.upperEndpoint)
             if extension_bit_field:
-                return [extension_bit_field, *octetstring_length_determinant, octetstring_bit_field]
-            return [*octetstring_length_determinant, octetstring_bit_field]
+                return [extension_bit_field] + octetstring_length_determinant + [octetstring_bit_field]
+            return octetstring_length_determinant + [octetstring_bit_field]
         else:
             octetstring_length_determinant = encode_length_determinant(normally_small_length=False,
                                                                        constrained=False,
@@ -226,8 +227,8 @@ def encode_octetstring(octetstring):
                                                                        lowerBound=0,
                                                                        upperBound=None)
             if extension_bit_field:
-                return [extension_bit_field, *octetstring_length_determinant, octetstring_bit_field]
-            return [*octetstring_length_determinant, octetstring_bit_field]
+                return [extension_bit_field] + octetstring_length_determinant + [octetstring_bit_field]
+            return octetstring_length_determinant + [octetstring_bit_field]
 
 
 def encode_sequence(sequence):    # 19
@@ -263,13 +264,13 @@ def encode_sequence(sequence):    # 19
     if optional_default_bit_field_value:
         if len(optional_default_bit_field_value) < 65536:    # 19.3
             optional_default_bit_field = bit_field(octet_align=False, value=optional_default_bit_field_value)
-            rootComponentFieldList = [optional_default_bit_field, *rootComponentFieldList]
+            rootComponentFieldList = [optional_default_bit_field] + rootComponentFieldList
         else:
             raise NotImplemented
     if sequence.subtypeSpec.extensionMarker:    # 19.1
         extension_bit = bit_field(octet_align=False, value='0')
         if (not sequence.extensionAddition) and (not sequence.extensionAdditionGroups):
-            return [extension_bit, *rootComponentFieldList]
+            return [extension_bit] + rootComponentFieldList
         if sequence.extensionAddition or sequence.extensionAdditionGroups:    # 19.7
             extension_addition_bit_field_value = ''
             extension_addition_field_list = []
@@ -344,11 +345,11 @@ def encode_sequence(sequence):    # 19
                                                                                   lowerBound=None,
                                                                                   upperBound=None)
                 sequence_field_list.extend(
-                    [extension_bit, *rootComponentFieldList, *extension_addition_length_determinant,
-                     extension_addition_bit_field, *extension_addition_field_list, *encoded_extension_addition_groups])
+                    [extension_bit] + rootComponentFieldList + extension_addition_length_determinant +
+                     [extension_addition_bit_field] + extension_addition_field_list + encoded_extension_addition_groups)
             else:
                 extension_bit = bit_field(octet_align=False, value='0')
-                sequence_field_list.extend([extension_bit, *rootComponentFieldList])
+                sequence_field_list.extend([extension_bit] + rootComponentFieldList)
         return sequence_field_list
     return rootComponentFieldList
 
@@ -364,13 +365,13 @@ def encode_sequence_of(sequence_of):    # 20
             length_determinant = encode_length_determinant(normally_small_length=False, constrained=True,
                                                            n=n, lowerBound=sequence_of.subtypeSpec.lowerEndpoint,
                                                            upperBound=sequence_of.subtypeSpec.upperEndpoint)
-            return [extension_bit_field, *length_determinant, *sequence_of_field_list]
+            return [extension_bit_field] + length_determinant + sequence_of_field_list
         else:
             extension_bit_field = bit_field(octet_align=False, value='1')
             length_determinant = encode_length_determinant(normally_small_length=False, constrained=False,
                                                            n=n, lowerBound=0,    # not certain but it works lb=0
                                                            upperBound=None)
-            return [extension_bit_field, *length_determinant, *sequence_of_field_list]
+            return [extension_bit_field] + length_determinant + sequence_of_field_list
     elif n < sequence_of.subtypeSpec.lowerEndpoint:
         raise SizeConstrainViolated("Number of SET OF/SEQUENCE OF {} components = {}".format(sequence_of.__class__, n))
     elif sequence_of.subtypeSpec.upperEndpoint and (n > sequence_of.subtypeSpec.upperEndpoint):
@@ -382,11 +383,11 @@ def encode_sequence_of(sequence_of):    # 20
             length_determinant = encode_length_determinant(normally_small_length=False, constrained=True,
                                                            n=n, lowerBound=sequence_of.subtypeSpec.lowerEndpoint,
                                                            upperBound=sequence_of.subtypeSpec.upperEndpoint)
-            return [*length_determinant, *sequence_of_field_list]
+            return [] + length_determinant + sequence_of_field_list
         else:
             length_determinant = encode_length_determinant(normally_small_length=False, constrained=False,
                                                            n=n, lowerBound=sequence_of.subtypeSpec.lowerEndpoint, upperBound=None)
-            return [*length_determinant, *sequence_of_field_list]
+            return [] + length_determinant + sequence_of_field_list
 
 
 def encode_choice(choice):    # 23
@@ -403,18 +404,18 @@ def encode_choice(choice):    # 23
                 encoded_choice_index_bit_field = create_field_list_for_constrained_whole_number(n=index,
                                                                                                 lowerEndpoint=0,
                                                                                                 upperEndpoint=n)
-                return [*encoded_choice_index_bit_field, *choice_field_list]
+                return [] + encoded_choice_index_bit_field + choice_field_list
     else:    # 23.5
         for index, namedType in enumerate(choice.rootComponent.namedTypes):
             if namedType.name == selected_name:    # 23.7
                 extension_bit_bit_field = bit_field(octet_align=False, value='0')
                 if len(choice.rootComponent.namedTypes) == 1:
-                    return [extension_bit_bit_field, *choice_field_list]
+                    return [extension_bit_bit_field] + choice_field_list
                 else:
                     encoded_choice_index_bit_field = create_field_list_for_constrained_whole_number(n=index,
                                                                                                     lowerEndpoint=0,
                                                                                                     upperEndpoint=n)
-                    return [extension_bit_bit_field, *encoded_choice_index_bit_field, *choice_field_list]
+                    return [extension_bit_bit_field] + encoded_choice_index_bit_field + choice_field_list
         else:
             if choice.extensionAddition and not choice.extensionAdditionGroups:
                 choice_extension = choice.extensionAddition
@@ -429,7 +430,7 @@ def encode_choice(choice):    # 23
                     encoded_choice_index_bit_field = encode_normally_small_non_negative_whole_number(n=index,
                                                                                                      lower_bound=0)
                     choice_field_list = encode_open_type_field(type=selected_component)
-                    return [extension_bit_bit_field, *encoded_choice_index_bit_field, *choice_field_list]
+                    return [extension_bit_bit_field] + encoded_choice_index_bit_field + choice_field_list
 
 
 def create_field_list_for_constrained_whole_number(n, lowerEndpoint, upperEndpoint):
@@ -446,7 +447,7 @@ def create_field_list_for_constrained_whole_number(n, lowerEndpoint, upperEndpoi
                                                                    n=n,
                                                                    lowerBound=1,
                                                                    upperBound=upperBound)
-        return [*constrained_length_determinant, constrained_whole_number]
+        return constrained_length_determinant + [constrained_whole_number]
 
 
 def encode_open_type_field(type):    # 11.2
@@ -458,7 +459,7 @@ def encode_open_type_field(type):    # 11.2
                                                                  constrained=False, n=octet_string_len,
                                                                  lowerBound=None, upperBound=None)
     octet_string_bit_field = bit_field(octet_align=True, value=octet_string)
-    return [*unconstrained_length_determinant, octet_string_bit_field]
+    return unconstrained_length_determinant + [octet_string_bit_field]
 
 
 def encode_constrained_whole_number(n, lowerBound, upperBound):    # 11.5
@@ -500,7 +501,7 @@ def encode_normally_small_non_negative_whole_number(n, lower_bound):    # 11.6
                                                                      lowerBound=1,
                                                                      upperBound=None)
 
-        return [single_bit_field, *unconstrained_length_determinant, normally_small_non_negative_whole_number]
+        return [single_bit_field] + unconstrained_length_determinant + [normally_small_non_negative_whole_number]
 
 
 def encode_non_negative_binary_integer(value, size, octet_align, minimum_number_of_octets=False):    # 11.3
@@ -652,10 +653,10 @@ def is_constant(integer):
 
 
 def create_new_fake_empty_sequence(rootComponent):
-    class FooConstraint():
+    class FooConstraint(object):
         pass
 
-    class FakeSequence:
+    class FakeSequence(object):
         subtypeSpec = FooConstraint()
         def __init__(self):
             self.named_types = {}

@@ -2,3 +2,4 @@
 *.pdf
 __pycache__/
 doc/
+*.pyc

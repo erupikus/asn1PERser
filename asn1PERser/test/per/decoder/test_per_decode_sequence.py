@@ -26,7 +26,7 @@ from asn1PERser.test.per.encoder.test_per_encode_sequence import  \
 
 ])
 def test_no_extension_no_default_no_optional_components_present_sequence_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -44,7 +44,7 @@ def test_no_extension_no_default_no_optional_components_present_sequence_can_be_
                         i1_is=True, i2_is=False, i3_is=False, i4_is=False, ext_mark=True)),
 ])
 def test_extension_components_are_present_but_no_default_no_optional_sequence_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -74,7 +74,7 @@ def test_extension_components_are_present_but_no_default_no_optional_sequence_ca
                         i1_is=False, i2_is=False, i3_is=False, i4_is=False)),
 ])
 def test_optional_components_present_in_extension_root_sequence_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -92,7 +92,7 @@ def test_optional_components_present_in_extension_root_sequence_can_be_decoded(s
                         i1_is=True, i2_is=True, i3_is=True, i4_is=True)),
 ])
 def test_default_components_with_none_default_values_present_in_extension_root_sequence_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -101,7 +101,7 @@ def test_default_components_with_none_default_values_present_in_extension_root_s
                         i1_is=False, i2_is=True, i3_is=False, i4_is=True)),                        # so they never will be decoded
 ])
 def test_default_components_with_default_values_present_in_filled_schema_are_not_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -122,7 +122,7 @@ def test_default_components_with_default_values_present_in_filled_schema_are_not
                         i1_is=True, i2_is=True, i3_is=True, i4_is=True, ext_mark=True)),
 ])
 def test_elements_in_extension_addition_may_not_be_present_even_if_no_optional_in_schema_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -141,7 +141,7 @@ def test_elements_in_extension_addition_may_not_be_present_even_if_no_optional_i
         DATA_bool_seq(SCHEMA_sequence_of_boolean, root_val=True, addition_present=True, addition_val=True)),
 ])
 def test_sequence_of_boolean_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -163,7 +163,7 @@ def test_sequence_of_boolean_can_be_decoded(schema, encoded, value):
         DATA_octet_seq(SCHEMA_sequence_of_octetstring, o1_is=False, o4_is=False, o5_is=False)),
 ])
 def test_sequence_of_octetstring_no_extension_marker_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -185,7 +185,7 @@ def test_sequence_of_octetstring_no_extension_marker_can_be_decoded(schema, enco
         DATA_bitstring_seq(SCHEMA_sequence_of_bitstring, b2_is=False, b3_is=False, b9_is=False)),
 ])
 def test_sequence_of_bitstring_with_extension_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -199,7 +199,7 @@ def test_sequence_of_bitstring_with_extension_can_be_decoded(schema, encoded, va
     (SCHEMA_sequence_of_enumerated(), '8A050100', DATA_enumerated_seq(SCHEMA_sequence_of_enumerated,  e1_is=False, e3_is=False, e4_is=False)),
 ])
 def test_sequence_of_enumerated_with_extension_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -253,4 +253,4 @@ def test_sequence_of_enumerated_with_extension_can_be_decoded(schema, encoded, v
         SCHEMA_sequence_with_extension_addition_groups_3, s0='99', s2='BB', s3='CC', s4='DD')),
 ])
 def test_sequence_with_extension_addition_groups_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema) == value
