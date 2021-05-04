@@ -16,5 +16,5 @@ class OctetStringType(OctetString):
         decoded = decode_octetstring(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
-        return {key_name if key_name else self.__class__.__name__: ''.join(format(byte, 'x') for byte in self.asNumbers())}
+    def to_dict(self, is_root=True):
+        return ''.join(format(byte, '02x') for byte in self.asNumbers())

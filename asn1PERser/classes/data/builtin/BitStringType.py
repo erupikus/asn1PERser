@@ -16,5 +16,5 @@ class BitStringType(BitString):
         decoded = decode_bitstring(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
-        return {key_name if key_name else self.__class__.__name__: int(self.asBinary(), 2)}
+    def to_dict(self, is_root=True):
+        return int(self.asBinary(), 2)

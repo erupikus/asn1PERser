@@ -1,5 +1,5 @@
 import pytest
-from pyasn1.type.namedtype import NamedType
+from pyasn1.type.namedtype import NamedType, OptionalNamedType
 from asn1PERser.classes.data.builtin import IntegerType, OctetStringType, BitStringType, BooleanType, \
     SequenceOfType, SequenceType, EnumeratedType, ChoiceType
 from asn1PERser.classes.types.type import AdditiveNamedTypes
@@ -11,29 +11,17 @@ from asn1PERser.test.parsing.asn1_python_code.SimpleProtocol import SimpleMessag
 
 
 @pytest.mark.parametrize("schema, value", [
-    (IntegerType(10), {'IntegerType': 10}),
-    (OctetStringType(binValue='101001011100'), {'OctetStringType': 'a5c0'}),
-    (OctetStringType(hexValue='DEADBEEF'), {'OctetStringType': 'deadbeef'}),
-    (BitStringType(binValue='101001011100'), {'BitStringType': 2652}),
-    (BitStringType(hexValue='a5c0'), {'BitStringType': 42432}),
-    (BooleanType(True), {'BooleanType': True}),
-    (BooleanType(False), {'BooleanType': False}),
+    (IntegerType(10), 10),
+    (OctetStringType(binValue='101001011100'), 'a5c0'),
+    (OctetStringType(hexValue='DEADBEEF'), 'deadbeef'),
+    (OctetStringType(hexValue='51800d80609bddfd80048054c0609bddfd800481de'), '51800d80609bddfd80048054c0609bddfd800481de'),
+    (BitStringType(binValue='101001011100'), 2652),
+    (BitStringType(hexValue='a5c0'), 42432),
+    (BooleanType(True), True),
+    (BooleanType(False), False),
 ])
 def test_create_simple_types_dict(schema, value):
-    assert schema.toDict() == value
-
-
-@pytest.mark.parametrize("schema, key_name, value", [
-    (IntegerType(-987654), 'myInt', {'myInt': -987654}),
-    (OctetStringType(binValue='101001011100'), 'myOctetString_1', {'myOctetString_1': 'a5c0'}),
-    (OctetStringType(hexValue='DEADBEEF'), 'myOctetString_2', {'myOctetString_2': 'deadbeef'}),
-    (BitStringType(binValue='101001011100'), 'MY_BIT_STRING_1', {'MY_BIT_STRING_1': 2652}),
-    (BitStringType(hexValue='a5c0'), 'MY_BIT_STRING_1', {'MY_BIT_STRING_1': 42432}),
-    (BooleanType(True), 'fuNNY_bool_one', {'fuNNY_bool_one': True}),
-    (BooleanType(False), 'sad_bool', {'sad_bool': False}),
-])
-def test_create_simple_types_with_custom_key_names_dict(schema, key_name,  value):
-    assert schema.toDict(key_name) == value
+    assert schema.to_dict() == value
 
 
 def create_choice(selection, initialized_type):
@@ -42,27 +30,27 @@ def create_choice(selection, initialized_type):
     return order
 
 
-@pytest.mark.parametrize("schema, key_name, value", [
-    (create_choice('one', IntegerType(12345)), '', {'Order': {'one': 12345}}),
-    (create_choice('two', MyInteger(0)), '', {'Order': {'two': 0}}),
-    (create_choice('three', OctetStringType(hexValue='feed')), '', {'Order': {'three': 'feed'}}),
-    (create_choice('four', MyOctetString(hexValue='deefabcd')), 'customOrder', {'customOrder': {'four': 'deefabcd'}}),
-    (create_choice('five', BitStringType(binValue='111100001111')), 'other_order', {'other_order': {'five': 3855}}),
-    (create_choice('six', MyBitString(hexValue='babe')), '', {'Order': {'six': 47806}}),
-    (create_choice('seven', BooleanType(True)), 'boolOrder', {'boolOrder': {'seven': True}}),
-    (create_choice('eight', MyBoolean(False)), '', {'Order': {'eight': False}}),
+@pytest.mark.parametrize("schema, value", [
+    (create_choice('one', IntegerType(12345)), {'one': 12345}),
+    (create_choice('two', MyInteger(0)), {'two': 0}),
+    (create_choice('three', OctetStringType(hexValue='feed')), {'three': 'feed'}),
+    (create_choice('four', MyOctetString(hexValue='deefabcd')), {'four': 'deefabcd'}),
+    (create_choice('five', BitStringType(binValue='111100001111')), {'five': 3855}),
+    (create_choice('six', MyBitString(hexValue='babe')), {'six': 47806}),
+    (create_choice('seven', BooleanType(True)), {'seven': True}),
+    (create_choice('eight', MyBoolean(False)), {'eight': False}),
 ])
-def test_create_choice_dict(schema, key_name, value):
-    assert schema.toDict(key_name) == value
+def test_create_choice_dict(schema, value):
+    assert schema.to_dict() == value
 
 
-@pytest.mark.parametrize("schema, key_name, value", [
-    (MyEnumerated('one'), '', {'MyEnumerated': 'one'}),
-    (MyEnumerated('two'), 'myEnum', {'myEnum': 'two'}),
-    (MyEnumerated('three'), '', {'MyEnumerated': 'three'}),
+@pytest.mark.parametrize("schema, value", [
+    (MyEnumerated('one'), 'one'),
+    (MyEnumerated('two'), 'two'),
+    (MyEnumerated('three'), 'three'),
 ])
-def test_create_enumerated_dict(schema, key_name, value):
-    assert schema.toDict(key_name) == value
+def test_create_enumerated_dict(schema, value):
+    assert schema.to_dict() == value
 
 
 def create_simple_sequence():
@@ -87,11 +75,11 @@ def create_simple_sequence():
 
 
 def test_create_simple_sequence_dict():
-    assert create_simple_sequence().toDict() == {'MySimpleSeq': {'one': -1,
-                                                                 'two': True,
-                                                                 'three': 'one',
-                                                                 'four': 7,
-                                                                 'five': 'bada'}}
+    assert create_simple_sequence().to_dict() == {'one': -1,
+                                                  'two': True,
+                                                  'three': 'one',
+                                                  'four': 7,
+                                                  'five': 'bada'}
 
 
 def create_simple_sequence_of(seq_of_type, values, input_type=None):
@@ -110,13 +98,13 @@ def create_simple_sequence_of(seq_of_type, values, input_type=None):
     return my_seq_of
 
 
-@pytest.mark.parametrize("schema, key_name, value", [
-    (create_simple_sequence_of(IntegerType, [1, 22, 333, 4444]), 'my_seq_of', {'my_seq_of': [1, 22, 333, 4444]}),
-    (create_simple_sequence_of(BitStringType, ['0011', '10', '10001000'], 'binValue'), '', {'MySeqOf': [3, 2, 136]}),
-    (create_simple_sequence_of(OctetStringType, ['dead', 'beef'], 'hexValue'), '', {'MySeqOf': ['dead', 'beef']}),
+@pytest.mark.parametrize("schema, value", [
+    (create_simple_sequence_of(IntegerType, [1, 22, 333, 4444]), [1, 22, 333, 4444]),
+    (create_simple_sequence_of(BitStringType, ['0011', '10', '10001000'], 'binValue'), [3, 2, 136]),
+    (create_simple_sequence_of(OctetStringType, ['dead', 'beef'], 'hexValue'), ['dead', 'beef']),
 ])
-def test_create_simple_sequence_of_dict(schema, key_name, value):
-    assert schema.toDict(key_name) == value
+def test_create_simple_sequence_of_dict(schema, value):
+    assert schema.to_dict() == value
 
 
 def test_simple_protocol_start_dict():
@@ -138,13 +126,13 @@ def test_simple_protocol_start_dict():
     simple_message = SimpleMessage()
     simple_message['start'] = start_message
 
-    simple_message_dict = {'SimpleMessage': {'start': {'sequenceNumber': 1,
-                                                       'timestamp': {'seconds': 1234567,
-                                                                     'useconds': 7654321},
-                                                       'srcPort': 10000,
-                                                       'dstPort': 20000}}}
+    simple_message_dict = {'start': {'sequenceNumber': 1,
+                                     'timestamp': {'seconds': 1234567,
+                                                   'useconds': 7654321},
+                                     'srcPort': 10000,
+                                     'dstPort': 20000}}
 
-    assert simple_message.toDict() == simple_message_dict
+    assert simple_message.to_dict() == simple_message_dict
 
 
 def test_simple_protocol_data_dict():
@@ -164,12 +152,12 @@ def test_simple_protocol_data_dict():
     simple_message = SimpleMessage()
     simple_message['data'] = msg_data
 
-    simple_message_dict = {'SimpleMessage': {'data': {'sequenceNumber': 55555,
-                                                      'swRelease': 'rel2',
-                                                      'macroId': 986895,
-                                                      'payload': ['dead', 'beef', 'feed', 'aa', 'bbbbbbbb']}}}
+    simple_message_dict = {'data': {'sequenceNumber': 55555,
+                                    'swRelease': 'rel2',
+                                    'macroId': 986895,
+                                    'payload': ['dead', 'beef', 'feed', 'aa', 'bbbbbbbb']}}
 
-    assert simple_message.toDict() == simple_message_dict
+    assert simple_message.to_dict() == simple_message_dict
 
 
 def test_more_complicated_sequence():
@@ -230,10 +218,31 @@ def test_more_complicated_sequence():
     top_seq['one'] = first_seq_of
     top_seq['two'] = second_seq_of
 
-    top_seq_dict = {'TopSequence': {'one': [{'aa': 1, 'bb': 2},
-                                            {'aa': 3, 'bb': 4}],
-                                    'two': [{'cc': 5, 'dd': 6},
-                                            {'cc': 7, 'dd': 8},
-                                            {'cc': 9, 'dd': 10}]}}
+    top_seq_dict = {'one': [{'aa': 1, 'bb': 2},
+                            {'aa': 3, 'bb': 4}],
+                    'two': [{'cc': 5, 'dd': 6},
+                            {'cc': 7, 'dd': 8},
+                            {'cc': 9, 'dd': 10}]}
 
-    assert top_seq.toDict() == top_seq_dict
+    assert top_seq.to_dict() == top_seq_dict
+
+
+def test_sequence_with_optional_types_dict():
+    class Inner(SequenceType):
+        rootComponent = AdditiveNamedTypes(
+            OptionalNamedType('a', IntegerType()),
+            OptionalNamedType('b', IntegerType()),
+        )
+        componentType = rootComponent
+
+    class TopSeq(SequenceType):
+        rootComponent = AdditiveNamedTypes(
+            NamedType('one', IntegerType()),
+            OptionalNamedType('two', Inner()),
+        )
+        componentType = rootComponent
+
+    top = TopSeq()
+    top['one'] = IntegerType(0)
+
+    assert top.to_dict() == {'one': 0}

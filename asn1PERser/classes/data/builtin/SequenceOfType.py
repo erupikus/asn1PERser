@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from pyasn1.type.univ import SequenceOf, noValue
 from asn1PERser.codec.per.encoder import encode_sequence_of
 from asn1PERser.codec.per.decoder import decode_sequence_of
@@ -17,10 +16,16 @@ class SequenceOfType(SequenceOf):
         decoded = decode_sequence_of(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
+    def to_dict(self, is_root=True):
         component_list = []
-        for component in self.components:
-            component_dict = component.toDict()
-            for k,v in component_dict.items():
-                component_list.append(v)
-        return {key_name if key_name else self.__class__.__name__: component_list}
+        for componentValue in self:
+            if (componentValue is not noValue and componentValue.isValue) or hasattr(componentValue, 'componentType'):
+                value_dict = componentValue.to_dict(is_root=False)
+                if value_dict is not noValue:
+                    component_list.append(value_dict)
+
+        if is_root:
+            return component_list
+        if not component_list:
+            return noValue
+        return component_list
