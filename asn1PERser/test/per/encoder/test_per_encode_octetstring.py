@@ -53,7 +53,7 @@ def DATA_octetstring(schema, bin_val=None, hex_val=None):
      '075CB35B6E395CA8'),
 ])
 def test_no_constrain_octetstring_as_binary_value_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -67,7 +67,7 @@ def test_no_constrain_octetstring_as_binary_value_can_be_encoded(octetstring, en
     (DATA_octetstring(SCHEMA_no_constrain_octetstring(), hex_val='0123ABCDEFA0123'), '080123ABCDEFA01230'),
 ])
 def test_no_constrain_octetstring_as_hex_value_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -75,7 +75,7 @@ def test_no_constrain_octetstring_as_hex_value_can_be_encoded(octetstring, encod
     (DATA_octetstring(SCHEMA_constrained_octetstring(lb=0, ub=0), hex_val=''), '00'),
 ])
 def test_constrained_octetstring_of_zero_length_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -93,7 +93,7 @@ def test_constrained_octetstring_of_zero_length_can_be_encoded(octetstring, enco
     (DATA_octetstring(SCHEMA_constrained_octetstring(lb=2, ub=2), hex_val='FFFF'), 'FFFF'),
 ])
 def test_constrained_same_len_octetstring_with_len_le_2_octetes_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -105,7 +105,7 @@ def test_constrained_same_len_octetstring_with_len_le_2_octetes_can_be_encoded(o
      '11223344556677889900AABBCCDDEEFF11'),
 ])
 def test_constrained_same_len_octetstring_with_len_gt_2_and_lt_64K_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -130,7 +130,7 @@ def test_constrained_same_len_octetstring_with_len_gt_2_and_lt_64K_can_be_encode
     'B0112233445566778899AABBCCDDEEFF001122334455'),
 ])
 def test_constrained_different_len_octet_string_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -155,7 +155,7 @@ def test_constrained_different_len_octet_string_can_be_encoded(octetstring, enco
      '78112233445566778899AABBCCDDEEFF'),
 ])
 def test_constrained_with_extension_when_len_is_within_extension_root_octetstring_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("octetstring, encoded", [
@@ -178,4 +178,4 @@ def test_constrained_with_extension_when_len_is_within_extension_root_octetstrin
      '80171122334455667788990011223344556677889900112233'),
 ])
 def test_constrained_with_extension_when_len_is_NOT_within_extension_root_octetstring_can_be_encoded(octetstring, encoded):
-    assert per_encoder(octetstring) == bytes.fromhex(encoded)
+    assert per_encoder(octetstring) == bytearray.fromhex(encoded)

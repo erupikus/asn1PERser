@@ -12,3 +12,6 @@ class BooleanType(Boolean):
     def create_field_list(self, per_bytes):
         decoded = decode_boolean(self, per_bytes)
         return decoded
+
+    def toDict(self, key_name=None):
+        return {key_name if key_name else self.__class__.__name__: bool(self)}

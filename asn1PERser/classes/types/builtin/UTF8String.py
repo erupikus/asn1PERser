@@ -4,7 +4,7 @@ from asn1PERser.classes.templates.creator import TemplateFiller
 
 class UTF8String(SimpleType):
     def __init__(self):
-        super().__init__()
+        super(UTF8String, self).__init__()
         self.typereference = "UTF8String"
 
     def fill_template(self):
@@ -12,4 +12,4 @@ class UTF8String(SimpleType):
                                    class_name=self.template_class_name)
 
     def __repr__(self):
-        return '\t' + super().__repr__() + '\n'
+        return '\t' + super(UTF8String, self).__repr__() + '\n'

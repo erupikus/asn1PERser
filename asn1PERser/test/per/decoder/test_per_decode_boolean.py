@@ -8,4 +8,4 @@ from asn1PERser.classes.data.builtin.BooleanType import BooleanType
     (BooleanType, '00', BooleanType(value=False)),
 ])
 def test_boolean_type_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

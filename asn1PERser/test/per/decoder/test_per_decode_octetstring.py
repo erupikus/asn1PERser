@@ -17,7 +17,7 @@ from asn1PERser.test.per.encoder.test_per_encode_octetstring import SCHEMA_const
                                                                              bin_val='01011100101100110101101101101110001110010101110010101')),
 ])
 def test_no_constrain_octetstring_as_binary_value_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -31,7 +31,7 @@ def test_no_constrain_octetstring_as_binary_value_can_be_decoded(schema, encoded
     (SCHEMA_no_constrain_octetstring(), '080123ABCDEFA01230', DATA_octetstring(SCHEMA_no_constrain_octetstring(), hex_val='0123ABCDEFA0123')),
 ])
 def test_no_constrain_octetstring_as_hex_value_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -39,7 +39,7 @@ def test_no_constrain_octetstring_as_hex_value_can_be_decoded(schema, encoded, v
     (SCHEMA_constrained_octetstring(lb=0, ub=0), '00', DATA_octetstring(SCHEMA_constrained_octetstring(lb=0, ub=0), hex_val='')),
 ])
 def test_constrained_octetstring_of_zero_length_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -57,7 +57,7 @@ def test_constrained_octetstring_of_zero_length_can_be_decoded(schema, encoded, 
     (SCHEMA_constrained_octetstring(lb=2, ub=2), 'FFFF', DATA_octetstring(SCHEMA_constrained_octetstring(lb=2, ub=2), hex_val='FFFF')),
 ])
 def test_constrained_same_len_octetstring_with_len_le_2_octetes_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -69,7 +69,7 @@ def test_constrained_same_len_octetstring_with_len_le_2_octetes_can_be_decoded(s
                                                                                                           hex_val='11223344556677889900AABBCCDDEEFF11')),
 ])
 def test_constrained_same_len_octetstring_with_len_gt_2_and_lt_64K_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -94,7 +94,7 @@ def test_constrained_same_len_octetstring_with_len_gt_2_and_lt_64K_can_be_decode
                                                                                                                     hex_val='112233445566778899AABBCCDDEEFF001122334455')),
 ])
 def test_constrained_different_len_octet_string_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -120,7 +120,7 @@ def test_constrained_different_len_octet_string_can_be_decoded(schema, encoded, 
                                                                                                            hex_val='112233445566778899AABBCCDDEEFF')),
 ])
 def test_constrained_with_extension_when_len_is_within_extension_root_octetstring_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -143,4 +143,4 @@ def test_constrained_with_extension_when_len_is_within_extension_root_octetstrin
                                                                                                                               hex_val='1122334455667788990011223344556677889900112233')),
 ])
 def test_constrained_with_extension_when_len_is_NOT_within_extension_root_octetstring_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

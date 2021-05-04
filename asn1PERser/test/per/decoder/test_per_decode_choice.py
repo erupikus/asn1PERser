@@ -20,7 +20,7 @@ from asn1PERser.test.per.encoder.test_per_encode_choice import SCHEMA_single_ite
     (SCHEMA_reverse_no_extension_simple_choice(), '00030186A0', DATA_choice(SCHEMA_reverse_no_extension_simple_choice(), identifier='i1', value=100000)),
 ])
 def test_no_extension_marker_choice_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -36,7 +36,7 @@ def test_no_extension_marker_choice_can_be_decoded(schema, encoded, value):
     (SCHEMA_reverse_with_extension_simple_choice(), '00030186A0', DATA_choice(SCHEMA_reverse_with_extension_simple_choice(), identifier='i1', value=100000)),
 ])
 def test_only_extension_marker_preset_choice_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -58,7 +58,7 @@ def test_only_extension_marker_preset_choice_can_be_decoded(schema, encoded, val
         DATA_choice(SCHEMA_selected_choice_from_extension_addition_more_elems(), identifier='i16', value=10)),
 ])
 def test_extension_present_but_choice_from_root_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -94,7 +94,7 @@ def test_extension_present_but_choice_from_root_can_be_decoded(schema, encoded, 
         DATA_choice(SCHEMA_selected_choice_from_extension_addition_more_elems(), identifier='i35', value=10)),
 ])
 def test_choice_from_extension_addition_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -132,4 +132,4 @@ def test_choice_from_extension_addition_can_be_decoded(schema, encoded, value):
         DATA_choice(SCHEMA_selected_choice_from_extension_addition_groups_2(), identifier='i9', value=10)),
 ])
 def test_choice_from_extension_addition_groups_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

@@ -57,7 +57,7 @@ def DATA_bitstring(schema, bin_val=None, hex_val=None):
      '2E0E0040FC0004'),
 ])
 def test_no_constrain_bitstring_as_binary_value_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -79,7 +79,7 @@ def test_no_constrain_bitstring_as_binary_value_can_be_encoded(bitstring, encode
      '80B0ABCDEFABCDEF0123456789ABCDEFABCDEF0123456789'),
 ])
 def test_no_constrain_bitstring_as_hex_value_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -87,7 +87,7 @@ def test_no_constrain_bitstring_as_hex_value_can_be_encoded(bitstring, encoded):
     # (DATA_bitstring(SCHEMA_constrained_bitstring(lb=0, ub=0), hex_val=''), '00'),    # Does not work
 ])
 def test_constrained_bitstring_of_zero_length_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -109,7 +109,7 @@ def test_constrained_bitstring_of_zero_length_can_be_encoded(bitstring, encoded)
     (DATA_bitstring(SCHEMA_constrained_bitstring(lb=16, ub=16), hex_val='2222'), '2222'),
 ])
 def test_constrained_bitstring_same_length_gt_zero_and_le_16_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -129,7 +129,7 @@ def test_constrained_bitstring_same_length_gt_zero_and_le_16_can_be_encoded(bits
 
 ])
 def test_constrained_bitstring_same_length_gt_16_and_lt_64K_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -143,7 +143,7 @@ def test_constrained_bitstring_same_length_gt_16_and_lt_64K_can_be_encoded(bitst
     (DATA_bitstring(SCHEMA_constrained_bitstring(lb=0, ub=65535), bin_val='111000111000111'), '000FE38E'),
 ])
 def test_constrained_bitstring_with_ub_less_then_64K_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("bitstring, encoded", [
@@ -167,4 +167,4 @@ def test_constrained_bitstring_with_ub_less_then_64K_can_be_encoded(bitstring, e
      '4000ABCDEFABCDEF0123456789ABCDEFABC0'),
 ])
 def test_constrained_bitstring_with_extension_marker_can_be_encoded(bitstring, encoded):
-    assert per_encoder(bitstring) == bytes.fromhex(encoded)
+    assert per_encoder(bitstring) == bytearray.fromhex(encoded)

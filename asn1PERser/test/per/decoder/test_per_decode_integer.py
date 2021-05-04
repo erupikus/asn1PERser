@@ -40,7 +40,7 @@ def SCHEMA_constrained_integer(lowerEndpoint_value, upperEndpoint_value, extensi
     (SCHEMA_not_constrained_integer(), '0401803E6F', 25181807),
 ])
 def test_unconstrained_greater_or_equal_zero_integers_are_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -60,7 +60,7 @@ def test_unconstrained_greater_or_equal_zero_integers_are_decoded(schema, encode
     (SCHEMA_not_constrained_integer(), '01FF', -1),
 ])
 def test_unconstrained_lower_than_zero_integers_are_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -85,7 +85,7 @@ def test_unconstrained_lower_than_zero_integers_are_decoded(schema, encoded, val
     (SCHEMA_constrained_integer(lowerEndpoint_value=25181807, upperEndpoint_value=25181807, ), '00', 25181807),
 ])
 def test_constrained_integer_range_has_the_value_1_so_decoding_shall_be_empty(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -129,7 +129,7 @@ def test_constrained_integer_range_has_the_value_1_so_decoding_shall_be_empty(sc
     (SCHEMA_constrained_integer(lowerEndpoint_value=25181807, upperEndpoint_value=25181808, ), '80', 25181808),
 ])
 def test_constrained_integer_range_has_value_2_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -152,7 +152,7 @@ def test_constrained_integer_range_has_value_2_can_be_decoded(schema, encoded, v
     (SCHEMA_constrained_integer(lowerEndpoint_value=4000, upperEndpoint_value=4003), 'C0', 4003),
 ])
 def test_constrained_integer_range_has_value_3_4_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -166,7 +166,7 @@ def test_constrained_integer_range_has_value_3_4_can_be_decoded(schema, encoded,
     (SCHEMA_constrained_integer(lowerEndpoint_value=-2, upperEndpoint_value=5), 'E0', 5),
 ])
 def test_constrained_integer_range_has_value_5_6_7_8_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -188,7 +188,7 @@ def test_constrained_integer_range_has_value_5_6_7_8_can_be_decoded(schema, enco
     (SCHEMA_constrained_integer(lowerEndpoint_value=-100000, upperEndpoint_value=-99985), 'F0', -99985),
 ])
 def test_constrained_integer_range_has_value_9_to_16_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -206,7 +206,7 @@ def test_constrained_integer_range_has_value_9_to_16_can_be_decoded(schema, enco
     (SCHEMA_constrained_integer(lowerEndpoint_value=4000, upperEndpoint_value=4031), 'F8', 4031),
 ])
 def test_constrained_integer_range_has_value_17_to_32_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -226,7 +226,7 @@ def test_constrained_integer_range_has_value_17_to_32_can_be_decoded(schema, enc
     (SCHEMA_constrained_integer(lowerEndpoint_value=1000000, upperEndpoint_value=1000063), 'FC', 1000063),
 ])
 def test_constrained_integer_range_has_value_33_to_64_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -244,7 +244,7 @@ def test_constrained_integer_range_has_value_33_to_64_can_be_decoded(schema, enc
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=127), 'FE', 127),
 ])
 def test_constrained_integer_range_has_value_65_to_128_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -269,7 +269,7 @@ def test_constrained_integer_range_has_value_65_to_128_can_be_decoded(schema, en
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=254), 'FE', 254),
 ])
 def test_constrained_integer_range_has_value_129_to_255_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -295,7 +295,7 @@ def test_constrained_integer_range_has_value_129_to_255_can_be_decoded(schema, e
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=255), 'FF', 255),
 ])
 def test_constrained_integer_range_has_value_256_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -337,7 +337,7 @@ def test_constrained_integer_range_has_value_256_can_be_decoded(schema, encoded,
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=65535), 'FFFF', 65535),
 ])
 def test_constrained_integer_range_has_value_257_to_65536_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -389,7 +389,7 @@ def test_constrained_integer_range_has_value_257_to_65536_can_be_decoded(schema,
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=4294967295), 'C0FFFFFFFF', 4294967295),
 ])
 def test_constrained_integer_range_has_value_greater_than_65536_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -433,7 +433,7 @@ def test_constrained_integer_range_has_value_greater_than_65536_can_be_decoded(s
     (SCHEMA_constrained_integer(lowerEndpoint_value=256, upperEndpoint_value=MAX), '0100', 256)
 ])
 def test_semi_constrained_integer_is_encoded_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -452,7 +452,7 @@ def test_semi_constrained_integer_is_encoded_can_be_decoded(schema, encoded, val
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=1000000, extensionMarker_value=True), '400186A0', 100000),
 ])
 def test_extension_marker_is_present_and_value_is_within_extension_root_integer_is_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -462,4 +462,4 @@ def test_extension_marker_is_present_and_value_is_within_extension_root_integer_
     (SCHEMA_constrained_integer(lowerEndpoint_value=0, upperEndpoint_value=3, extensionMarker_value=True), '8003FE7960', -100000),
 ])
 def test_extension_marker_is_present_and_values_in_not_within_extension_root_integer_is_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

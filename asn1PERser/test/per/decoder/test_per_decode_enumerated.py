@@ -35,7 +35,7 @@ from asn1PERser.test.per.encoder.test_per_encode_enumerated import SCHEMA_my_enu
         DATA_my_enum(SCHEMA_my_enum(enumerationRoot_list=enumeration_list[0:260]), 'e256')),
 ])
 def test_no_extension_marker_enumerated_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -69,7 +69,7 @@ def test_no_extension_marker_enumerated_can_be_decoded(schema, encoded, value):
         DATA_my_enum(SCHEMA_my_enum(enumerationRoot_list=enumeration_list[0:260], extensionMarker_value=True), 'e256')),
 ])
 def test_extension_marker_is_present_and_extension_addition_is_empty_but_value_is_from_root_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -117,7 +117,7 @@ def test_extension_marker_is_present_and_extension_addition_is_empty_but_value_i
                                         extensionMarker_value=True), 'e256')),
 ])
 def test_extension_marker_is_present_and_extension_addition_is_not_empty_but_value_is_from_root_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value
 
 
 @pytest.mark.parametrize("schema, encoded, value", [
@@ -165,4 +165,4 @@ def test_extension_marker_is_present_and_extension_addition_is_not_empty_but_val
                                         extensionMarker_value=True), 'e256')),
 ])
 def test_extension_marker_is_present_and_value_is_from_extension_can_be_decoded(schema, encoded, value):
-    assert per_decoder(per_stream=bytes.fromhex(encoded), asn1Spec=schema()) == value
+    assert per_decoder(per_stream=bytearray.fromhex(encoded), asn1Spec=schema()) == value

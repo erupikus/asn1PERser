@@ -75,7 +75,7 @@ def DATA_seq_of(schema_seq_of, i0_is, i1_is, i2_is, i3_is, i4_is):
      '050300870702FCB3011703030D400105'),
 ])
 def test_no_constrains_sequence_of_integer_can_be_encoded(sequence_of, encoded):
-    assert per_encoder(sequence_of) == bytes.fromhex(encoded)
+    assert per_encoder(sequence_of) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence_of, encoded", [
@@ -93,7 +93,7 @@ def test_no_constrains_sequence_of_integer_can_be_encoded(sequence_of, encoded):
      'C00300870702FCB3011703030D400105'),
 ])
 def test_constrained_sequence_of_no_extension_can_be_encoded(sequence_of, encoded):
-    assert per_encoder(sequence_of) == bytes.fromhex(encoded)
+    assert per_encoder(sequence_of) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence_of, encoded", [
@@ -109,7 +109,7 @@ def test_constrained_sequence_of_no_extension_can_be_encoded(sequence_of, encode
      '0300870702FCB3011703030D400105'),
 ])
 def test_constrained_sequence_of_of_fixed_length_no_extension_can_be_encoded(sequence_of, encoded):
-    assert per_encoder(sequence_of) == bytes.fromhex(encoded)
+    assert per_encoder(sequence_of) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence_of, encoded", [
@@ -127,7 +127,7 @@ def test_constrained_sequence_of_of_fixed_length_no_extension_can_be_encoded(seq
      '600300870702FCB3011703030D400105'),
 ])
 def test_constrained_sequence_of_with_extension_and_num_of_elems_is_within_extension_root_can_be_encoded(sequence_of, encoded):
-    assert per_encoder(sequence_of) == bytes.fromhex(encoded)
+    assert per_encoder(sequence_of) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence_of, encoded", [
@@ -151,7 +151,7 @@ def test_constrained_sequence_of_with_extension_and_num_of_elems_is_within_exten
      '800103008707'),
 ])
 def test_constrained_sequence_of_with_extension_and_num_of_elems_is_not_within_extension_root_can_be_encoded(sequence_of, encoded):
-    assert per_encoder(sequence_of) == bytes.fromhex(encoded)
+    assert per_encoder(sequence_of) == bytearray.fromhex(encoded)
 
 @pytest.mark.parametrize("sequence_of, exception", [
     (DATA_seq_of(SCHEMA_constrained_seq_of_no_extension(lb=4, ub=5), i0_is=False, i1_is=False, i2_is=False, i3_is=False, i4_is=False),

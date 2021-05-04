@@ -681,7 +681,7 @@ def DATA_extension_addition_groups_seq(schema, s0=None, s1=None, s2=None, s3=Non
                      i4_is=True, ext_mark=True), '000300870702FCB300178003030D4028'),
 ])
 def test_no_extension_no_default_no_optional_components_present_sequence_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -695,7 +695,7 @@ def test_no_extension_no_default_no_optional_components_present_sequence_can_be_
                      i4_is=False, ext_mark=True), '800300870707000302FCB3'),
 ])
 def test_extension_components_are_present_but_no_default_no_optional_sequence_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -717,7 +717,7 @@ def test_extension_components_are_present_but_no_default_no_optional_sequence_ca
      '00'),
 ])
 def test_optional_components_present_in_extension_root_sequence_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -731,7 +731,7 @@ def test_optional_components_present_in_extension_root_sequence_can_be_encoded(s
      'C00300870702FCB300178003030D4028'),
 ])
 def test_default_components_with_none_default_values_present_in_extension_root_sequence_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -743,7 +743,7 @@ def test_default_components_with_none_default_values_present_in_extension_root_s
      '0003008707001728'),
 ])
 def test_default_components_with_default_values_present_in_filled_schema_are_not_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -760,7 +760,7 @@ def test_default_components_with_default_values_present_in_filled_schema_are_not
 
 ])
 def test_elements_in_extension_addition_may_not_be_present_even_if_no_optional_in_schema_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, exception", [
@@ -792,7 +792,7 @@ def test_when_mandatory_extension_field_is_not_present_then_can_not_be_encoded_a
     (DATA_bool_seq(SCHEMA_sequence_of_boolean, root_val=True, addition_present=True, addition_val=True), 'FFE2BFF801800180018001800180018001800180018001800180'),
 ])
 def test_sequence_of_boolean_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -806,7 +806,7 @@ def test_sequence_of_boolean_can_be_encoded(sequence, encoded):
     (DATA_octet_seq(SCHEMA_sequence_of_octetstring, o1_is=False, o4_is=False, o5_is=False), '0002DEAD00ABCD01AA03DDDDD0'),
 ])
 def test_sequence_of_octetstring_no_extension_marker_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -820,7 +820,7 @@ def test_sequence_of_octetstring_no_extension_marker_can_be_encoded(sequence, en
     (DATA_bitstring_seq(SCHEMA_sequence_of_bitstring, b2_is=False, b3_is=False, b9_is=False), '900CF0F010DEADF810FEED0014F0F0F0F0F010BBBB14CCCCC04C03F0F0F00418DDDDDD'),
 ])
 def test_sequence_of_bitstring_with_extension_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -834,7 +834,7 @@ def test_sequence_of_bitstring_with_extension_can_be_encoded(sequence, encoded):
     (DATA_enumerated_seq(SCHEMA_sequence_of_enumerated, e1_is=False, e3_is=False, e4_is=False), '8A050100'),
 ])
 def test_sequence_of_enumerated_with_extension_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("sequence, encoded", [
@@ -888,7 +888,7 @@ def test_sequence_of_enumerated_with_extension_can_be_encoded(sequence, encoded)
                                         s0='99', s2='BB', s3='CC', s4='DD'), '80019906C00201BB050001CC01DD'),
 ])
 def test_sequence_with_extension_addition_groups_can_be_encoded(sequence, encoded):
-    assert per_encoder(sequence) == bytes.fromhex(encoded)
+    assert per_encoder(sequence) == bytearray.fromhex(encoded)
 
 
 # elementy w extensionAddition musza byc obecne po kolei

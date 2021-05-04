@@ -34,7 +34,7 @@ def SCHEMA_constrained_integer(value, lowerEndpoint_value, upperEndpoint_value, 
     (SCHEMA_not_contrained_integer(25181807), '0401803E6F'),
 ])
 def test_unconstrained_greater_or_equal_zero_integers_are_encoded(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -54,7 +54,7 @@ def test_unconstrained_greater_or_equal_zero_integers_are_encoded(integer, encod
     (SCHEMA_not_contrained_integer(-1), '01FF'),
 ])
 def test_unconstrained_lower_than_zero_integers_are_encoded(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -79,7 +79,7 @@ def test_unconstrained_lower_than_zero_integers_are_encoded(integer, encoded):
     (SCHEMA_constrained_integer(25181807, lowerEndpoint_value=25181807, upperEndpoint_value=25181807, ), '00'),
 ])
 def test_constrained_integer_range_has_the_value_1_so_encoding_bit_field_shall_be_empty(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -123,7 +123,7 @@ def test_constrained_integer_range_has_the_value_1_so_encoding_bit_field_shall_b
     (SCHEMA_constrained_integer(25181808, lowerEndpoint_value=25181807, upperEndpoint_value=25181808, ), '80'),
 ])
 def test_constrained_integer_range_has_value_2(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -146,7 +146,7 @@ def test_constrained_integer_range_has_value_2(integer, encoded):
     (SCHEMA_constrained_integer(4003, lowerEndpoint_value=4000, upperEndpoint_value=4003), 'C0'),
 ])
 def test_constrained_integer_range_has_value_3_4(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -160,7 +160,7 @@ def test_constrained_integer_range_has_value_3_4(integer, encoded):
     (SCHEMA_constrained_integer(5, lowerEndpoint_value=-2, upperEndpoint_value=5), 'E0'),
 ])
 def test_constrained_integer_range_has_value_5_6_7_8(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -182,7 +182,7 @@ def test_constrained_integer_range_has_value_5_6_7_8(integer, encoded):
     (SCHEMA_constrained_integer(-99985, lowerEndpoint_value=-100000, upperEndpoint_value=-99985), 'F0'),
 ])
 def test_constrained_integer_range_has_value_9_to_16(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -200,7 +200,7 @@ def test_constrained_integer_range_has_value_9_to_16(integer, encoded):
     (SCHEMA_constrained_integer(4031, lowerEndpoint_value=4000, upperEndpoint_value=4031), 'F8'),
 ])
 def test_constrained_integer_range_has_value_17_to_32(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -220,7 +220,7 @@ def test_constrained_integer_range_has_value_17_to_32(integer, encoded):
     (SCHEMA_constrained_integer(1000063, lowerEndpoint_value=1000000, upperEndpoint_value=1000063), 'FC'),
 ])
 def test_constrained_integer_range_has_value_33_to_64(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -238,7 +238,7 @@ def test_constrained_integer_range_has_value_33_to_64(integer, encoded):
     (SCHEMA_constrained_integer(127, lowerEndpoint_value=0, upperEndpoint_value=127), 'FE'),
 ])
 def test_constrained_integer_range_has_value_65_to_128(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -263,7 +263,7 @@ def test_constrained_integer_range_has_value_65_to_128(integer, encoded):
     (SCHEMA_constrained_integer(254, lowerEndpoint_value=0, upperEndpoint_value=254), 'FE'),
 ])
 def test_constrained_integer_range_has_value_129_to_255(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -289,7 +289,7 @@ def test_constrained_integer_range_has_value_129_to_255(integer, encoded):
     (SCHEMA_constrained_integer(255, lowerEndpoint_value=0, upperEndpoint_value=255), 'FF'),
 ])
 def test_constrained_integer_range_has_value_256(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -331,7 +331,7 @@ def test_constrained_integer_range_has_value_256(integer, encoded):
     (SCHEMA_constrained_integer(65535, lowerEndpoint_value=0, upperEndpoint_value=65535), 'FFFF'),
 ])
 def test_constrained_integer_range_has_value_257_to_65536(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -383,7 +383,7 @@ def test_constrained_integer_range_has_value_257_to_65536(integer, encoded):
     (SCHEMA_constrained_integer(4294967295, lowerEndpoint_value=0, upperEndpoint_value=4294967295), 'C0FFFFFFFF'),
 ])
 def test_constrained_integer_range_has_value_greater_than_65536(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -427,7 +427,7 @@ def test_constrained_integer_range_has_value_greater_than_65536(integer, encoded
     (SCHEMA_constrained_integer(256, lowerEndpoint_value=256, upperEndpoint_value=MAX), '0100')
 ])
 def test_semi_constrained_integer_is_encoded(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -446,7 +446,7 @@ def test_semi_constrained_integer_is_encoded(integer, encoded):
     (SCHEMA_constrained_integer(100000, lowerEndpoint_value=0, upperEndpoint_value=1000000, extensionMarker_value=True), '400186A0'),
 ])
 def test_extension_marker_is_present_and_value_is_within_extension_root_integer_is_encoded(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)
 
 
 @pytest.mark.parametrize("integer, encoded", [
@@ -456,4 +456,4 @@ def test_extension_marker_is_present_and_value_is_within_extension_root_integer_
     (SCHEMA_constrained_integer(-100000, lowerEndpoint_value=0, upperEndpoint_value=3, extensionMarker_value=True), '8003FE7960'),
 ])
 def test_extension_marker_is_present_and_values_in_not_within_extension_root_integer_is_encoded(integer, encoded):
-    assert per_encoder(integer) == bytes.fromhex(encoded)
+    assert per_encoder(integer) == bytearray.fromhex(encoded)

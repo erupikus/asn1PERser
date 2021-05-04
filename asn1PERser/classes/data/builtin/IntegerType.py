@@ -9,7 +9,7 @@ class IntegerType(Integer):
     subtypeSpec = NoConstraint()
 
     def __init__(self, value=noValue, **kwargs):
-        super().__init__(value, **kwargs)
+        super(IntegerType, self).__init__(value, **kwargs)
 
     def fill_field_list(self, field_list):
         integer_field_list = encode_integer(self)
@@ -19,3 +19,6 @@ class IntegerType(Integer):
     def create_field_list(self, per_bytes):
         decoded = decode_integer(self, per_bytes)
         return decoded
+
+    def toDict(self, key_name=None):
+        return {key_name if key_name else self.__class__.__name__: int(self)}
