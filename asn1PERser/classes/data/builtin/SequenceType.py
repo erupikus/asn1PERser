@@ -23,6 +23,11 @@ class SequenceType(Sequence):
     def toDict(self, key_name=None):
         component_dict = OrderedDict()
         for componentType, componentValue in self.items():
-            if componentValue is not noValue and componentValue.isValue:
-                component_dict.update(componentValue.toDict(componentType))
+            if (componentValue is not noValue and componentValue.isValue):
+                value_dict = componentValue.toDict(componentType)
+                component_dict.update(value_dict)
+            elif hasattr(componentValue, 'componentType'):
+                value_dict = componentValue.toDict(componentType)
+                if value_dict[componentType]:
+                    component_dict.update(value_dict)
         return {key_name if key_name else self.__class__.__name__: component_dict}
