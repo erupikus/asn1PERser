@@ -17,10 +17,9 @@ class SequenceOfType(SequenceOf):
         decoded = decode_sequence_of(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
+    def toDict(self, is_root=True):
         component_list = []
         for component in self.components:
-            component_dict = component.toDict()
-            for k,v in component_dict.items():
-                component_list.append(v)
-        return {key_name if key_name else self.__class__.__name__: component_list}
+            component_dict = component.toDict(is_root=False)
+            component_list.append(component_dict)
+        return component_list

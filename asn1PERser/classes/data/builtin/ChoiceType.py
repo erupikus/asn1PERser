@@ -19,7 +19,10 @@ class ChoiceType(Choice):
         decoded = decode_choice(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
+    def toDict(self, is_root=True):
         for componentType, componentValue in self.items():
             if componentValue is not noValue and componentValue.isValue:
-                return {key_name if key_name else self.__class__.__name__: componentValue.toDict(componentType)}
+                value_dict = componentValue.toDict(is_root=False)
+                if value_dict is not noValue:
+                    return {componentType: value_dict}
+                return {}

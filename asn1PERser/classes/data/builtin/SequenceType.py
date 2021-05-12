@@ -20,14 +20,16 @@ class SequenceType(Sequence):
         decoded = decode_sequence(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
+    def toDict(self, is_root=True):
         component_dict = OrderedDict()
         for componentType, componentValue in self.items():
-            if (componentValue is not noValue and componentValue.isValue):
-                value_dict = componentValue.toDict(componentType)
-                component_dict.update(value_dict)
-            elif hasattr(componentValue, 'componentType'):
-                value_dict = componentValue.toDict(componentType)
-                if value_dict[componentType]:
-                    component_dict.update(value_dict)
-        return {key_name if key_name else self.__class__.__name__: component_dict}
+            if (componentValue is not noValue and componentValue.isValue) or hasattr(componentValue, 'componentType'):
+                value_dict = componentValue.toDict(is_root=False)
+                if value_dict is not noValue:
+                    component_dict[componentType] = value_dict
+
+        if is_root:
+            return component_dict
+        if not component_dict:
+            return noValue
+        return component_dict

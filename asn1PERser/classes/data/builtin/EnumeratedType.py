@@ -18,5 +18,5 @@ class EnumeratedType(Enumerated):
         decoded = decode_enumerated(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
-        return {key_name if key_name else self.__class__.__name__: self.namedValues[int(self)]}
+    def toDict(self, is_root=True):
+        return self.namedValues[int(self)]

@@ -20,5 +20,5 @@ class IntegerType(Integer):
         decoded = decode_integer(self, per_bytes)
         return decoded
 
-    def toDict(self, key_name=None):
-        return {key_name if key_name else self.__class__.__name__: int(self)}
+    def toDict(self, is_root=True):
+        return int(self)
