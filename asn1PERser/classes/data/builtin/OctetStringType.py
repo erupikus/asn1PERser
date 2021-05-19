@@ -17,4 +17,4 @@ class OctetStringType(OctetString):
         return decoded
 
     def toDict(self, is_root=True):
-        return ''.join(format(byte, 'x') for byte in self.asNumbers())
+        return ''.join(format(byte, '02x') for byte in self.asNumbers())
