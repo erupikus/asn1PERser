@@ -14,6 +14,7 @@ from asn1PERser.test.parsing.asn1_python_code.SimpleProtocol import SimpleMessag
     (IntegerType(10), 10),
     (OctetStringType(binValue='101001011100'), 'a5c0'),
     (OctetStringType(hexValue='DEADBEEF'), 'deadbeef'),
+    (OctetStringType(hexValue='51800d80609bddfd80048054c0609bddfd800481de'), '51800d80609bddfd80048054c0609bddfd800481de'),
     (BitStringType(binValue='101001011100'), 2652),
     (BitStringType(hexValue='a5c0'), 42432),
     (BooleanType(True), True),
