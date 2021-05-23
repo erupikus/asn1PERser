@@ -24,6 +24,3 @@ class IntegerType(SimpleType):
             already_filled_template.add(filled_template)
             return filled_template
         return ''
-
-    def __repr__(self):
-        return '\t' + super(IntegerType, self).__repr__() + '\n'

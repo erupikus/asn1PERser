@@ -10,6 +10,3 @@ class UTF8String(SimpleType):
     def fill_template(self):
         return TemplateFiller.fill(asn_type=self.__class__.__name__,
                                    class_name=self.template_class_name)
-
-    def __repr__(self):
-        return '\t' + super(UTF8String, self).__repr__() + '\n'

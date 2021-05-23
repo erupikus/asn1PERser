@@ -83,24 +83,16 @@ class Type(Template):
         self._constraint = constrain
 
     def __repr__(self):
-        type = 'TYPE: ' + self.__class__.__name__
-        typereference = 'typereference: ' + '(' + self.typereference + ')'
-        identifier = 'identifier: ' + self.identifier
-        valuereference = 'valuereference: ' + self.valuereference
-        value = 'value: ' + str(self.Value)
-        constrain = ('constrain: ' + str(self.constraint)) if self.constraint else ''
-        optional = 'OPTIONAL' if self.optional else ''
-        default = 'DEFAULT {}'.format(self.default) if self.default else ''
-        basic = type + '; ' + typereference + '; ' + identifier
-        if constrain:
-            basic += '; ' + constrain
-        if optional:
-            return basic + '; ' + optional
-        if default:
-            return basic + '; ' + default
-        if valuereference:
-            basic = valuereference + '; ' + basic + '; ' + value
-        return basic
+        type = 'TYPE: {}'.format(self.__class__.__name__)
+        typereference = 'typeref: {}'.format(self.typereference)
+        identifier = 'id: {}'.format(self.identifier if self.identifier else None)
+        valuereference = 'valueref: {}'.format(self.valuereference if self.valuereference else None)
+        value = 'val: {}'.format(str(self.Value))
+        constrain = 'con: {}'.format(str(self.constraint))
+        optional = 'OPT: {}'.format(str(self.optional))
+        default = 'DEF: {}'.format(self.default)
+        return '(' + ', '.join([type, typereference, identifier, valuereference,
+                                value, constrain, optional, default]) + ')'
 
 
 class SimpleType(Type):

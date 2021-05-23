@@ -95,9 +95,5 @@ class SequenceType(ComponentType):
         return named_type_properties
 
     def __repr__(self):
-        if self.ComponentTypeList:
-            components = ''
-            for ComponentType in self.ComponentTypeList:
-                components += '\t' + str(ComponentType).rstrip() + '\n'
-            return '\t' + super(SequenceType, self).__repr__() + '\n' + components
-        return '\t' + super(SequenceType, self).__repr__()
+        return '\n\t'.join([super(SequenceType, self).__repr__()] + \
+                           [str(ComponentType) for ComponentType in self.ComponentTypeList])

@@ -13,6 +13,9 @@ class NoConstraint(ConstraintsIntersection):
         self.upperEndpoint = None
         super(NoConstraint, self).__init__()
 
+    def __repr__(self):
+        return str(None)
+
 
 class ExtensionMarker(ConstraintsIntersection):
     def __init__(self, present=False):

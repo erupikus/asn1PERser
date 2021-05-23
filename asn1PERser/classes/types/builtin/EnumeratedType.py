@@ -53,7 +53,5 @@ class EnumeratedType(SimpleType):
         return "'" + value + "'"
 
     def __repr__(self):
-        if self.EnumerationItems:
-            items = ', '.join([str(item).strip() for item in self.EnumerationItems])
-            return '\t' + super(EnumeratedType, self).__repr__() + ' ' + '{' + items + '}' + '\n'
-        return '\t' + super(EnumeratedType, self).__repr__()
+        return '\n\t'.join([super(EnumeratedType, self).__repr__()] + \
+                           ['{' + str(item).strip() + '}' for item in self.EnumerationItems if item])

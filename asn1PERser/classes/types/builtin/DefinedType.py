@@ -32,7 +32,3 @@ class DefinedType(Type):
     @default.setter
     def default(self, default):
         self._default = default
-
-
-    def __repr__(self):
-        return '\t' + super(DefinedType, self).__repr__() + '\n'

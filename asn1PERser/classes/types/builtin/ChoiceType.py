@@ -86,9 +86,5 @@ class ChoiceType(ComponentType):
         return named_type_properties
 
     def __repr__(self):
-        if self.AlternativeTypeList:
-            alternatives = ''
-            for AlternativeType in self.AlternativeTypeList:
-                alternatives += '\t' + str(AlternativeType).rstrip() + '\n'
-            return '\t' + super(ChoiceType, self).__repr__() + '\n' + alternatives
-        return '\t' + super(ChoiceType, self).__repr__()
+        return '\n\t'.join([super(ChoiceType, self).__repr__()] + \
+                           [str(alternativeType) for alternativeType in self.AlternativeTypeList])

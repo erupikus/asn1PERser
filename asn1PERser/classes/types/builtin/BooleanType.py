@@ -26,6 +26,3 @@ class BooleanType(SimpleType):
         if value == 'TRUE':
             return True
         return False
-
-    def __repr__(self):
-        return '\t' + super(BooleanType, self).__repr__() + '\n'

@@ -30,6 +30,3 @@ class OctetStringType(SimpleType):
             return "binValue={}".format(value[:-1])
         if value.endswith('H'):
             return "hexValue={}".format(value[:-1])
-
-    def __repr__(self):
-        return '\t' + super(OctetStringType, self).__repr__() + '\n'
