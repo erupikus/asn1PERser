@@ -1,3 +1,9 @@
+Version 0.3.1
+- add Python 2.7 compatibility.
+- add 'to_dict' method that returns dictionary from initialized schema.
+- change __repr__ behaviour in types/builtin
+- update README.md
+
 Version 0.2.1
 ----------------
 - fix issue when new type was assigned to defined type, like:

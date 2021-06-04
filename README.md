@@ -14,9 +14,14 @@ Supported ASN.1 types and their constraints are:
 | SEQUENCE     |              |             |            |       X               |       ExtensionMarker       |
 | SEQUENCE OF  |      X       |             |     X      |       X               |       SequenceOfValueSize   |
 
-On how to use them please see example down below.
+Table of contents:
+[Examples](#examples)
+[Decoding from string](#decoding-from-string)
+[Dictionary creation](#dictionary-creation)
+[Additional info](#additional-info)
+[History](#history)
 
-## Example
+## Examples
 Following ASN.1 schema:
 
 ```python
@@ -445,7 +450,68 @@ SimpleMessage:
    0xdead   0xbeef   0xfeed   0xaa   0xbbbbbbbb
 ```
 
-## Additional information
+  ## Decoding from string
+When encoded bytes are given as __string__ use _bytearray.fromhex()_:
+
+```
+
+pure_string = str('70d90320f0f0f880dead40beef40feed00aac0bbbbbbbb')
+real_bytes = bytearray.fromhex(pure_string)
+
+decoded = decode(asn1Spec=SimpleMessage(), per_stream=real_bytes)
+print(decoded)
+```
+
+above will output:
+```
+SimpleMessage:
+ data=Data:
+  sequenceNumber=55555
+  swRelease=rel2
+  macroId=986895
+  payload=Payload:
+   0xdead   0xbeef   0xfeed   0xaa   0xbbbbbbbb
+```
+
+## Dictionary creation
+  Data above can be accessed like dictionary but it is not a dictionary.
+  Method '__to_dict__' was added to make dictionary creation simple:
+
+```
+msg_dict = decoded.to_dict()
+print(type(msg_dict))
+print(msg_dict)
+```
+
+output:
+```
+<class 'dict'>
+{'data': OrderedDict([('sequenceNumber', 55555), ('swRelease', 'rel2'), ('macroId', 986895), ('payload', ['dead', 'beef', 'feed', 'aa', 'bbbbbbbb'])])}
+```
+
+To better show created structure, json.dumps() can be used:
+```
+print(json.dumps(msg_dict, indent=2))
+```
+
+output:
+```
+{
+  "data": {
+    "sequenceNumber": 55555,
+    "swRelease": "rel2",
+    "macroId": 986895,
+    "payload": [
+      "dead",
+      "beef",
+      "feed",
+      "aa",
+      "bbbbbbbb"
+    ]
+  }
+}
+
+## Additional info
 
 For more examples please see library tests:
 - parsing tests, located in test/parsing/ folder.
