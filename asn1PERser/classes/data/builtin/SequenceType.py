@@ -11,6 +11,18 @@ class SequenceType(Sequence):
     extensionAddition = None
     extensionAdditionGroups = []
 
+    @property
+    def isValue(self):
+        base_isValue = super(SequenceType, self).isValue
+        if base_isValue:
+            return base_isValue
+        if self.components is noValue:
+            return False
+        for component in self.components:
+            if component is not noValue and component.isValue:
+                return True
+        return False
+
     def fill_field_list(self, field_list):
         sequence_field_list = encode_sequence(self)
         if sequence_field_list:

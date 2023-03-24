@@ -35,5 +35,8 @@ class SequenceOfType(ComponentType):
     def ComponentType(self, ComponentType):
         self._ComponentType = ComponentType
 
+    def __getitem__(self, item):
+        return [self.ComponentType][item]
+
     def __repr__(self):
         return '\n\t'.join([super(SequenceOfType, self).__repr__(), str(self.ComponentType)])

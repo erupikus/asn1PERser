@@ -1,5 +1,6 @@
 import binascii
 import logging
+import codecs
 from collections import deque
 from .encoder import bit_field_size, get_bit_field_size, integer_range, get_range_octet_len, \
     is_constrained_whole_number, is_semi_constrained_whole_number, is_constant
@@ -67,7 +68,7 @@ class PerBytes(object):
 def decode(per_stream, asn1Spec, log_level=logging.WARNING):
     logger.setLevel(log_level)
     per_bytes = PerBytes(binascii.hexlify(per_stream))
-    logger.debug("Decoding of bytes: '%s' started. Binary representation: '%s'", per_stream.hex(), per_bytes.binary_string)
+    logger.debug("Decoding of bytes: '%s' started. Binary representation: '%s'", codecs.encode(per_stream, "hex_codec"), per_bytes.binary_string)
     decoded = asn1Spec.create_field_list(per_bytes)
     if decoded == '':
         return asn1Spec.__class__('')

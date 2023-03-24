@@ -103,9 +103,20 @@ class ComponentType(Type):
     pass
 
 
+class DefType(Type):
+    pass
+
+
 class AdditiveNamedTypes(NamedTypes):
+    def __init__(self, *named_types):
+        self.additive_named_types = list(named_types)
+        super(AdditiveNamedTypes, self).__init__(*self.additive_named_types)
+
     def __add__(self, other):
         if isinstance(other, list):
-            other = AdditiveNamedTypes(*[named_type for additive_named_types in other for
-                                         named_type in additive_named_types._NamedTypes__namedTypes])
-        return self.__class__(*(self._NamedTypes__namedTypes + other._NamedTypes__namedTypes))
+            all_named_types = []
+            for additive_named_type_element in other:
+                all_named_types.extend(additive_named_type_element.additive_named_types)
+            return AdditiveNamedTypes(*(self.additive_named_types + all_named_types))
+        else:
+            return AdditiveNamedTypes(*(self.additive_named_types + other.additive_named_types))

@@ -1,10 +1,15 @@
 import os
 import re
+import logging
 from asn1PERser.classes.templates import Template
-from asn1PERser.classes.types.type import SimpleType
+from asn1PERser.classes.types.type import SimpleType, ComponentType, DefType
 
+
+logger = logging.getLogger("asn1perser.moduleParser")
 
 typereference_to_type = {}
+valuereference_to_type = {}
+constants = {}
 already_filled_template = set()
 
 
@@ -33,17 +38,107 @@ class ModuleDefinition(Template):
 
     def sort_assigment_list(self, AssignmentList):
         value_assignments = []
+        constant_assignments = []
         simple_type_assignments = []
         component_type_assignments = []
+        type_type_assignments = []
         for assignment in AssignmentList:
             if isinstance(assignment, SimpleType):
                 if assignment.valuereference:
                     value_assignments.append(assignment)
                 else:
                     simple_type_assignments.append(assignment)
+            elif isinstance(assignment, DefType):
+                if assignment.valuereference:
+                    constant_assignments.append(assignment)
+                    constants[assignment.valuereference] = assignment
+                else:
+                    type_type_assignments.append(assignment)
             else:
                 component_type_assignments.append(assignment)
-        return [] + value_assignments + simple_type_assignments + component_type_assignments
+        component_type_assignments = self.sort_components(component_type_assignments)
+        type_type_assignments, component_type_assignments = self.additional_sort(type_type_assignments, component_type_assignments)
+        return [] + value_assignments + simple_type_assignments + type_type_assignments + constant_assignments + component_type_assignments
+
+    def sort_components(self, component_type_assignments):
+        MAX_ITERATIONS = 100
+        all_sorted = False
+        already_moved_typereferences = []
+        new_order_typereferences = []
+        new_order_components = []
+        iter = 0
+
+        while iter != MAX_ITERATIONS:
+            components_typereferences = [component_type.typereference for component_type in component_type_assignments]
+            if all_sorted:
+                break
+            all_sorted = True
+            iter += 1
+            for component_index in range(len(component_type_assignments)):
+                ComponentType = component_type_assignments[component_index]
+                for subcomponent in self._get_subcomponents(ComponentType):
+                    if subcomponent.typereference in new_order_typereferences:
+                        continue
+
+                    try:
+                        inner_component_index = components_typereferences.index(subcomponent.typereference)
+                    except ValueError:
+                        continue
+                    if inner_component_index > component_index and subcomponent.typereference not in already_moved_typereferences:
+                        new_order_typereferences.append(subcomponent.typereference)
+                        new_order_components.append(component_type_assignments[inner_component_index])
+                        already_moved_typereferences.append(subcomponent.typereference)
+                        all_sorted = False
+                else:
+                    if ComponentType.typereference not in new_order_typereferences:
+                        new_order_typereferences.append(ComponentType.typereference)
+                        new_order_components.append(ComponentType)
+
+            component_type_assignments = new_order_components[:]
+            new_order_components = []
+            new_order_typereferences = []
+            already_moved_typereferences = []
+        else:
+            logger.warning("Could not sort components properly. This could lead to 'NameError' as some class"
+                           " definition may be lower than its instantiation (Python reads .py files"
+                           " from top to bottom.")
+        return component_type_assignments
+
+    def _get_subcomponents(self, component):
+        subcomponents = []
+        if component.__class__.__name__ == 'DefinedType':
+            return [component]
+        for subcomponent in component:
+            if isinstance(subcomponent, str):  # elipsis: ...
+                continue
+            if subcomponent.typereference in ['IntegerType', 'BooleanType', 'OctetStringType',
+                                              'BitStringType', 'EnumeratedType']:
+                continue
+            if subcomponent.typereference in ['ChoiceType', 'SequenceType', 'SequenceOfType']:
+                subcomponents += self._get_subcomponents(subcomponent)
+            else:
+                subcomponents.append(subcomponent)
+        return subcomponents
+
+    def additional_sort(self, type_type_assignments, component_type_assignments):
+        components_typereferences = [component_type.typereference for component_type in component_type_assignments]
+        type_type_typereferences = [type_type.typereference for type_type in type_type_assignments]
+
+        new_type_type_assignments = []
+
+        for type_index in range(len(type_type_typereferences)):
+            type_type_typereference = type_type_typereferences[type_index]
+            try:
+                type_in_components_index = components_typereferences.index(type_type_typereference)
+            except ValueError:
+                new_type_type_assignments.append(type_type_assignments[type_index])
+                continue
+
+            type_type_component = type_type_assignments[type_index]
+            component_type_assignments.insert(type_in_components_index + 1, type_type_component)
+            components_typereferences = [component_type.typereference for component_type in component_type_assignments]
+
+        return (new_type_type_assignments, component_type_assignments)
 
     @property
     def ModuleIdentifier(self):

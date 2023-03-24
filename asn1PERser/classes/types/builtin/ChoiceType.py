@@ -1,6 +1,6 @@
 from ..type import ComponentType
 from asn1PERser.classes.templates.creator import template_filler
-from asn1PERser.classes.module import already_filled_template
+from asn1PERser.classes.module import already_filled_template, typereference_to_type, constants
 
 
 class ChoiceType(ComponentType):
@@ -64,8 +64,13 @@ class ChoiceType(ComponentType):
         if filled_template in already_filled_template:
             return ''
         already_filled_template.add(filled_template)
-        alternatives_templates = ''.join([alternative_template.fill_template() for alternative_template in alternatives_templates])
-        return alternatives_templates + filled_template
+
+        filled_alternative_template_str = ''
+        for alternative_template in alternatives_templates:
+            if alternative_template.default or alternative_template.typereference in typereference_to_type.keys():
+                continue
+            filled_alternative_template_str += alternative_template.fill_template()
+        return filled_alternative_template_str + filled_template
 
     @property
     def AlternativeTypeList(self):
@@ -84,6 +89,9 @@ class ChoiceType(ComponentType):
         elif ComponentType.typereference in ['ChoiceType', 'SequenceType', 'EnumeratedType', 'SequenceOfType']:
             named_type_properties['field_type'] = str(ComponentType.template_class_name)
         return named_type_properties
+
+    def __getitem__(self, item):
+        return self.AlternativeTypeList[item]
 
     def __repr__(self):
         return '\n\t'.join([super(ChoiceType, self).__repr__()] + \

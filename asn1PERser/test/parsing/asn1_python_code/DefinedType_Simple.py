@@ -31,29 +31,6 @@ class MyEnumerated1(EnumeratedType):
     namedValues = enumerationRoot
 
 
-class MySeq1(SequenceType):
-    rootComponent = AdditiveNamedTypes(
-        DefaultedNamedType('d00', IntegerType(10)),
-        DefaultedNamedType('d01', IntegerType(0)),
-    )
-    componentType = rootComponent
-
-
-MyInt2 = MyInt1
-
-
-MyOctetString2 = MyOctetString1
-
-
-MyBitString2 = MyBitString1
-
-
-MyBoolean2 = MyBoolean1
-
-
-MyEnumerated2 = MyEnumerated1
-
-
 MyInt2 = MyInt1
 
 
@@ -84,6 +61,20 @@ MyEnumerated2 = MyEnumerated1
 MyEnumerated3 = MyEnumerated2
 
 
+class MySeq1(SequenceType):
+    rootComponent = AdditiveNamedTypes(
+        DefaultedNamedType('d00', IntegerType(10)),
+        DefaultedNamedType('d01', IntegerType(0)),
+    )
+    componentType = rootComponent
+
+
+MySeq4 = MySeq1
+
+
+MySeq2 = MySeq1
+
+
 class MySeq3(SequenceType):
     rootComponent = AdditiveNamedTypes(
         NamedType('d03', MyInt2()),
@@ -98,5 +89,8 @@ class MySeq3(SequenceType):
         NamedType('d12', MyEnumerated3()),
     )
     componentType = rootComponent
+
+
+MySeq5 = MySeq3
 
 

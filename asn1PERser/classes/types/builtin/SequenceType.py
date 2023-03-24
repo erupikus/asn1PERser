@@ -1,6 +1,6 @@
 from ..type import ComponentType
 from asn1PERser.classes.templates.creator import template_filler
-from asn1PERser.classes.module import already_filled_template
+from asn1PERser.classes.module import already_filled_template, typereference_to_type, constants
 
 
 class SequenceType(ComponentType):
@@ -64,8 +64,12 @@ class SequenceType(ComponentType):
         if filled_template in already_filled_template:
             return ''
         already_filled_template.add(filled_template)
-        components_templates = ''.join([component_template.fill_template() for component_template in components_templates])
-        return components_templates + filled_template
+        filled_component_template_str = ''
+        for component_template in components_templates:
+            if component_template.default or component_template.typereference in typereference_to_type.keys(): # in constants.keys():
+                continue
+            filled_component_template_str += component_template.fill_template()
+        return filled_component_template_str + filled_template
 
     @property
     def ComponentTypeList(self):
@@ -79,7 +83,8 @@ class SequenceType(ComponentType):
         named_type_properties = {'optional': False,
                                  'default': False,
                                  'field_name': str(ComponentType.identifier),
-                                 'field_type': str(ComponentType.template_field_type)}
+                                 'field_type': str(ComponentType.template_field_type),
+                                 'is_constant': False}
         if ComponentType.typereference in ['IntegerType', 'BooleanType', 'OctetStringType', 'BitStringType']:
             if ComponentType.is_constrained():
                 named_type_properties['field_type'] = str(ComponentType.template_class_name)
@@ -89,11 +94,23 @@ class SequenceType(ComponentType):
             named_type_properties['optional'] = True
         elif ComponentType.default is not None:
             named_type_properties['default'] = True
-            named_type_properties['default_value'] = str(ComponentType.default)
+            if ComponentType.default in constants.keys():
+                named_type_properties['is_constant'] = True;
+                named_type_properties['default_value'] = str(ComponentType.default)
+            else:
+                if ComponentType.typereference in typereference_to_type.keys():
+                    named_type_properties['default_value'] = typereference_to_type[ComponentType.typereference].parse_value(ComponentType.default)
+                else:
+                    named_type_properties['default_value'] = str(ComponentType.default)
         else:
             pass
         return named_type_properties
 
+    def __getitem__(self, item):
+        return self.ComponentTypeList[item]
+
     def __repr__(self):
         return '\n\t'.join([super(SequenceType, self).__repr__()] + \
-                           [str(ComponentType) for ComponentType in self.ComponentTypeList])
+                           ["ComponentTypes("] + \
+                               [",".join([str(ComponentType) for ComponentType in self.ComponentTypeList])] + \
+                           [")"])

@@ -14,10 +14,10 @@ constraint_tuple = namedtuple('constraint', 'lowerEndpoint upperEndpoint extensi
 def parse_ModuleDefinition(toks):
     module = ModuleDefinition()
     module.ModuleIdentifier = toks['ModuleIdentifier'][0]
-    module.EncodingReferenceDefault = toks['EncodingReferenceDefault']
-    module.TagDefault = toks['TagDefault']
-    module.ExtensionDefault = toks['ExtensionDefault']
-    module.ModuleBody = toks['ModuleBody']
+    module.EncodingReferenceDefault = toks['EncodingReferenceDefault'] if 'EncodingReferenceDefault' in toks.keys() else ''
+    module.TagDefault = toks['TagDefault'] if 'TagDefault' in toks.keys() else ''
+    module.ExtensionDefault = toks['ExtensionDefault'] if 'ExtensionDefault' in toks.keys() else ''
+    module.ModuleBody = toks['ModuleBody'] if 'ModuleBody' in toks.keys() else ''
     return module
 
 
@@ -36,6 +36,8 @@ def parse_TypeAssignment(toks):
 
     if item_type.typereference in builtin_types:
         item_type.typereference = item_typereference
+    else:
+        item_type.identifier = item_typereference
     typereference_to_type[item_typereference] = deepcopy(item_type)
     return item_type
 

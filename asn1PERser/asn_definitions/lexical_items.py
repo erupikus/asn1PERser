@@ -28,7 +28,6 @@ Rec. ITU-T X.680 (08/2015)
 Page 17
 '''
 valuereference = identifier
-valuereference
 
 '''
 Rec. ITU-T X.680 (08/2015)

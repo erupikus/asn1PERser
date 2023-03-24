@@ -1,5 +1,8 @@
+import logging
+
 import pytest
 from pyasn1.type.namedtype import NamedType, OptionalNamedType
+from asn1PERser import decode
 from asn1PERser.classes.data.builtin import IntegerType, OctetStringType, BitStringType, BooleanType, \
     SequenceOfType, SequenceType, EnumeratedType, ChoiceType
 from asn1PERser.classes.types.type import AdditiveNamedTypes
@@ -8,6 +11,8 @@ from asn1PERser.test.parsing.asn1_python_code.Choice_Simple import Order, MyInte
 from asn1PERser.test.parsing.asn1_python_code.SimpleTypes import MyEnumerated
 from asn1PERser.test.parsing.asn1_python_code.SimpleProtocol import SimpleMessage, Port, UTC_Timestamp, \
     SequenceNumber, Start, Data, Payload, Message
+from asn1PERser.classes.types.constraint import MIN, MAX, NoConstraint, ExtensionMarker, SequenceOfValueSize, \
+    ValueRange, SingleValue, ValueSize, ConstraintOr, ConstraintAnd
 
 
 @pytest.mark.parametrize("schema, value", [
@@ -246,3 +251,51 @@ def test_sequence_with_optional_types_dict():
     top['one'] = IntegerType(0)
 
     assert top.to_dict() == {'one': 0}
+
+
+@pytest.fixture
+def sequence_with_extension_addition_group():
+    class Port(IntegerType):
+        subtypeSpec = ValueRange(10000, 65535)
+
+    class SequenceNumber(IntegerType):
+        subtypeSpec = ValueRange(0, 65535)
+
+    class Start(SequenceType):
+        subtypeSpec = ExtensionMarker(True)
+        rootComponent = AdditiveNamedTypes(
+            NamedType('sequenceNumber', SequenceNumber()),
+        )
+        extensionAdditionGroups = [
+            AdditiveNamedTypes(
+                NamedType('port', Port()),
+            ),
+        ]
+        componentType = rootComponent + extensionAdditionGroups
+
+    class Stop(SequenceType):
+        rootComponent = AdditiveNamedTypes(
+            NamedType('sequenceNumber', SequenceNumber()),
+        )
+        componentType = rootComponent
+
+    class SimpleMessage(ChoiceType):
+        rootComponent = AdditiveNamedTypes(
+            NamedType('start', Start()),
+            NamedType('stop', Stop()),
+        )
+        componentType = rootComponent
+
+    return SimpleMessage
+
+
+def test_sequence_that_has_extension_addition_group_present(sequence_with_extension_addition_group):
+    start_real_bytes = bytearray.fromhex("0004d2")
+    decoded_start = decode(asn1Spec=sequence_with_extension_addition_group(), per_stream=start_real_bytes)
+    assert decoded_start.to_dict() == {'start': {'sequenceNumber': 1234}}
+
+
+def test_sequence_that_has_extension_addition_group_not_present(sequence_with_extension_addition_group):
+    stop_real_bytes = bytearray.fromhex("8004d2")
+    decoded_stop = decode(asn1Spec=sequence_with_extension_addition_group(), per_stream=stop_real_bytes)
+    assert decoded_stop.to_dict() == {'stop': {'sequenceNumber': 1234}}

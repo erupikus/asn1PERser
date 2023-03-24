@@ -15,11 +15,12 @@ Supported ASN.1 types and their constraints are:
 | SEQUENCE OF  |      X       |             |     X      |       X               |       SequenceOfValueSize   |
 
 Table of contents:
-[Examples](#examples)
-[Decoding from string](#decoding-from-string)
-[Dictionary creation](#dictionary-creation)
-[Additional info](#additional-info)
-[History](#history)
+1. [Examples](#examples)
+2. [Decoding from string](#decoding-from-string)
+3. [Dictionary creation](#dictionary-creation)
+4. [Additional info](#additional-info)
+5. [History](#history)
+6. [Known bugs](#known-bugs)
 
 ## Examples
 Following ASN.1 schema:
@@ -236,7 +237,7 @@ encoded alive bytes as hex string:
 4c5cd5fe55403039
 
 
-alive message structure as string...:
+decoded alive message structure as string...:
 SimpleMessage:
  alive=Alive:
   timestamp=UTC_Timestamp:
@@ -247,6 +248,10 @@ SimpleMessage:
 
 ...can be accessed like dictionary:
 1557528149
+
+
+...can be transformed into dictionary:
+{'alive': OrderedDict([('timestamp', OrderedDict([('seconds', 1557528149), ('useconds', 12345)]))])}
 ```
 
 Next message:
@@ -308,6 +313,10 @@ SimpleMessage:
 
 ...can be accessed like dictionary:
 65533
+
+
+...can be transformed into dictionary:
+{'start': OrderedDict([('sequenceNumber', 10), ('timestamp', OrderedDict([('seconds', 1557528149), ('useconds', 12345)])), ('srcPort', 65533), ('dstPort', 10000)])}
 ```
 
 Next message:
@@ -373,6 +382,10 @@ SimpleMessage:
 
 ...can be accessed like dictionary:
 dead
+
+
+...can be transformed into dictionary:
+{'data': OrderedDict([('sequenceNumber', 55555), ('swRelease', 'rel2'), ('macroId', 986895), ('payload', ['dead', 'beef', 'feed', 'aa', 'bbbbbbbb'])])}
 ```
 
 Next message:
@@ -426,31 +439,13 @@ SimpleMessage:
 
 ...can be accessed like dictionary:
 rel3
+
+
+...can be transformed into dictionary:
+{'data': OrderedDict([('sequenceNumber', 256), ('swRelease', 'rel3'), ('payload', ['deadbeef'])])}
 ```
 
-When encoded bytes are given as __string__ use _bytearray.fromhex()_:
-
-```python
-'''
-pure_string = str('70d90320f0f0f880dead40beef40feed00aac0bbbbbbbb')
-real_bytes = bytearray.fromhex(pure_string)
-
-decoded = decode(asn1Spec=SimpleMessage(), per_stream=real_bytes)
-print(decoded)
-```
-
-above will output:
-```
-SimpleMessage:
- data=Data:
-  sequenceNumber=55555
-  swRelease=rel2
-  macroId=986895
-  payload=Payload:
-   0xdead   0xbeef   0xfeed   0xaa   0xbbbbbbbb
-```
-
-  ## Decoding from string
+## Decoding from string
 When encoded bytes are given as __string__ use _bytearray.fromhex()_:
 
 ```
@@ -510,6 +505,7 @@ output:
     ]
   }
 }
+```
 
 ## Additional info
 
@@ -528,3 +524,47 @@ Tests for parsing also take time.
 ## History
 
 See CHANGES file.
+
+## Known bugs
+- Defining BitStringType type with default hexValue set to empty string (''), like:
+```
+...
+d15     BIT STRING DEFAULT ''H,
+...
+```
+will parse to Python code but running it will cause exception:
+```
+pyasn1.error.PyAsn1Error: BitStringType.fromHexString() error: invalid literal for int() with base 16: ''
+```
+
+- This will parse, but sorting algorith may not sort it corretly:
+```
+    
+    MySeq2 ::= MySeq1   -- ok since one level of nesting is ok
+
+    MySeq3 ::= MySeq1   -- ok since one level of nesting is ok
+    
+    MySeq1 ::= SEQUENCE {
+        d00     INTEGER
+    }
+
+    MySeq4 ::= MySeq2   -- NOT OK! 2nd level of nesting 
+```
+This will parse into:
+```python
+MySeq4 = MySeq2
+
+
+class MySeq1(SequenceType):
+    rootComponent = AdditiveNamedTypes(
+        NamedType('d00', IntegerType()),
+    )
+    componentType = rootComponent
+
+
+MySeq3 = MySeq1
+
+
+MySeq2 = MySeq1
+```
+so Python will not find MySeq2 - this will lead to NameError.

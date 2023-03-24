@@ -12,7 +12,11 @@ class {{ class_name }}({{ class_type }}):
   {%- if named_type.optional %}
         OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
   {%- elif named_type.default %}
+    {%- if named_type.is_constant %}
+        DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.default_value }}),
+    {%- else %}
         DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+    {%- endif %}
   {%- else %}
         NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
   {%- endif %}
@@ -24,7 +28,11 @@ class {{ class_name }}({{ class_type }}):
     {%- if named_type.optional %}
         OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
     {%- elif named_type.default %}
-        DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+      {%- if named_type.is_constant %}
+            DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.default_value }}),
+      {%- else %}
+            DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+      {%- endif %}
     {%- else %}
         NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
     {%- endif %}
@@ -39,7 +47,11 @@ class {{ class_name }}({{ class_type }}):
       {%- if named_type.optional %}
             OptionalNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
       {%- elif named_type.default %}
-            DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+        {%- if named_type.is_constant %}
+                DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.default_value }}),
+        {%- else %}
+                DefaultedNamedType('{{ named_type.field_name }}', {{ named_type.field_type }}({{ named_type.default_value }})),
+        {%- endif %}
       {%- else %}
             NamedType('{{ named_type.field_name }}', {{ named_type.field_type }}()),
       {%- endif %}

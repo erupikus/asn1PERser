@@ -40,4 +40,8 @@ DefinedTypeCheck DEFINITIONS AUTOMATIC TAGS::= BEGIN
         d12     MyEnumerated3
     }
 
+    MySeq4 ::= MySeq1
+
+    MySeq5 ::= MySeq3
+
 END
