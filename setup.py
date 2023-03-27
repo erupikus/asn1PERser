@@ -21,7 +21,7 @@ setuptools.setup(
     install_requires=[
         "pyasn1>=0.4.7",
         "pyparsing>=2.4.7",
-        "Jinja2>=2.11.3",
+        "Jinja2>=2.10.0",
         "future>=0.18.2",
     ],
     classifiers=[
