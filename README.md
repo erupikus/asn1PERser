@@ -220,7 +220,7 @@ simple_message['alive'] = msg_alive
 
 per_bytes = encode(asn1Spec=simple_message)
 print('encoded alive bytes as hex string:')
-print(per_bytes.hex())
+print(per_bytes.hex())  # py2: print(binascii.hexlify(per_bytes))
 print('\n')
 
 decoded = decode(per_stream=per_bytes, asn1Spec=SimpleMessage())
@@ -229,6 +229,10 @@ print(decoded)
 
 print('...can be accessed like dictionary:')
 print(decoded['alive']['timestamp']['seconds'])
+print('\n')
+
+print('...can be transformed into dictionary:')
+print(decoded.to_dict())
 ```
 
 above will output:
@@ -283,7 +287,7 @@ simple_message['start'] = msg_start
 
 per_bytes = encode(asn1Spec=simple_message)
 print('encoded start bytes as hex string:')
-print(per_bytes.hex())
+print(per_bytes.hex())  # py2: print(binascii.hexlify(per_bytes))
 print('\n')
 
 decoded = decode(per_stream=per_bytes, asn1Spec=SimpleMessage())
@@ -291,6 +295,10 @@ print('start message structure as string...:')
 print(decoded)
 print('...can be accessed like dictionary:')
 print(decoded['start']['srcPort'])
+print('\n')
+
+print('...can be transformed into dictionary:')
+print(decoded.to_dict())
 ```
 
 above will output:
@@ -354,7 +362,7 @@ simple_message['data'] = msg_data
 
 per_bytes = encode(asn1Spec=simple_message)
 print('encoded data bytes as hex string:')
-print(per_bytes.hex())
+print(per_bytes.hex())  # py2: print(binascii.hexlify(per_bytes))
 print('\n')
 
 decoded = decode(per_stream=per_bytes, asn1Spec=SimpleMessage())
@@ -362,6 +370,10 @@ print('data message structure as string...:')
 print(decoded)
 print('...can be accessed like dictionary:')
 print(bytes(decoded['data']['payload'][0]).hex())
+print('\n')
+
+print('...can be transformed into dictionary:')
+print(decoded.to_dict())
 ```
 
 above will output:
@@ -412,7 +424,7 @@ simple_message['data'] = msg_data
 
 per_bytes = encode(asn1Spec=simple_message)
 print('encoded data bytes as hex string:')
-print(per_bytes.hex())
+print(per_bytes.hex())  # py2: print(binascii.hexlify(per_bytes))
 print('\n')
 
 decoded = decode(per_stream=per_bytes, asn1Spec=SimpleMessage())
@@ -420,6 +432,10 @@ print('data message structure as string...:')
 print(decoded)
 print('...can be accessed like dictionary:')
 print(decoded['data']['swRelease'])
+print('\n')
+
+print('...can be transformed into dictionary:')
+print(decoded.to_dict())
 ```
 
 above will output:

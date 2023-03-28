@@ -1,3 +1,6 @@
+Version 0.4.1
+- relaxed Jinja2 requirements to >= 2.10.0
+
 Version 0.4.0
 - add some basic sorting mechanism after parsing ASN to increase chances Python classes are ordered correctly
 - add logging mechanism to PER decoder (only:( )
