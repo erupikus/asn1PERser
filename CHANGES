@@ -1,3 +1,6 @@
+Version 0.4.2
+- add logging.cfg to package
+
 Version 0.4.1
 - relaxed Jinja2 requirements to >= 2.10.0
 
