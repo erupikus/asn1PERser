@@ -537,6 +537,20 @@ This library inherits extensively from pyasn1 library so BER and other encoding 
 Parsing may take time - when trying to parse about 2000 lines of ASN.1 it took 15-20 minutes.
 Tests for parsing also take time.
 
+asn1PERser uses logging library (for now only in decoder.py module).
+By default logging.NullHandler() is set as library top handler so no logs are visible.
+If you want to enable logging call asn1perser_logging_setup with (at least) handler
+parameter set to something else than logging.NullHandler:
+
+```
+import logging
+from asn1PERser import asn1perser_logging_setup
+
+asn1perser_logging_setup(logging.StreamHandler())
+```
+
+Above will print logging.INFO level logs to console.
+
 ## History
 
 See CHANGES file.

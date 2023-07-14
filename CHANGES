@@ -1,3 +1,6 @@
+Version 0.4.3
+- remove logging.cfg; to configure logging one must call asn1perser_logging_setup
+
 Version 0.4.2
 - add logging.cfg to package
 
