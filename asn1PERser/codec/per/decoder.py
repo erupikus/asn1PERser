@@ -65,8 +65,7 @@ class PerBytes(object):
         return int(len(self.binary_string) / 8)
 
 
-def decode(per_stream, asn1Spec, log_level=logging.WARNING):
-    logger.setLevel(log_level)
+def decode(per_stream, asn1Spec, **kwargs):
     per_bytes = PerBytes(binascii.hexlify(per_stream))
     logger.debug("Decoding of bytes: '%s' started. Binary representation: '%s'", codecs.encode(per_stream, "hex_codec"), per_bytes.binary_string)
     decoded = asn1Spec.create_field_list(per_bytes)
